@@ -1,0 +1,12 @@
+spring.application.name=shellwe
+
+#MySQL
+spring.datasource.url=jdbc:mysql://localhost:3306/shellwe?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul
+spring.datasource.username={username}
+spring.datasource.password={password}
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+
