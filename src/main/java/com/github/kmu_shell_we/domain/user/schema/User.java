@@ -67,7 +67,7 @@ public class User extends BaseSchema {
 
         // 재귀적으로 상속된 역할 모두 수집
         private void collectionAuthorization(Role role, Set<Role> roles) {
-            roles.add(role); // 자기 자신을 추가
+            roles.add(role); // 자기 자신을 추가.
             for (Role inheritedRole : role.inheritedRoles) {
                 collectionAuthorization(inheritedRole, roles); // 상속된 역할도 재귀적으로 수집
             }
