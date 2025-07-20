@@ -40,7 +40,7 @@ public class User extends BaseSchema {
 
     public enum Role {
         MEMBER,
-        ADMIN, // ADMIN은 MEMBER의 권한을 상속받음
+        ADMIN,
         ;
     }
 
