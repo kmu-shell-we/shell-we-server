@@ -8,3 +8,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+app:
+  jwt:
+    key: ${JWT_SECRET_KEY}
+    access-token-expiration-hours: 4
+    refresh-token-expiration-hours: 168
