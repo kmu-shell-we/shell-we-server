@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "app.jwt")
 public class JwtProperty {
+
     private String key;
-    private long accessTokenExpirationHours;
-    private long refreshTokenExpirationHours;
+    private long tokenExpirationHours;
 }

@@ -2,7 +2,7 @@ package com.github.kmu_shell_we.global.security.jwt;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.kmu_shell_we.domain.auth.exception.AuthExceptionCode;
+import com.github.kmu_shell_we.domain.auth.exception.AuthExceptions;
 import com.github.kmu_shell_we.global.exception.ApiException;
 import com.github.kmu_shell_we.global.response.ApiResponse;
 import jakarta.annotation.Nonnull;
@@ -11,19 +11,27 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final UserDetailsService userDetailsService;
+
+    private final JwtUtil jwtUtil;
+
     private final ObjectMapper objectMapper;
 
     @Override
@@ -33,20 +41,33 @@ public class JwtFilter extends OncePerRequestFilter {
             @Nonnull FilterChain filterChain
     ) throws ServletException, IOException {
 
-        String accessToken = extractTokenFromRequest(request);
+        Optional<String> accessToken = extractTokenFromRequest(request);
 
         try {
-            if (accessToken != null && jwtTokenProvider.validateToken(accessToken)) {
-                Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+            if (accessToken.isPresent() && jwtUtil.validateToken(accessToken.get())) {
+
+                String id = jwtUtil.extractId(accessToken.get());
+
+                UserDetails userDetails = userDetailsService.loadUserByUsername(id);
+
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                );
+
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (TokenExpiredException e) {
-            handleException(response, AuthExceptionCode.ACCESS_TOKEN_EXPIRED.toException());
+
+            handleException(response, AuthExceptions.ACCESS_TOKEN_EXPIRED.toException());
             return;
         } catch (ApiException e) {
+
             handleException(response, e);
             return;
         } catch (Exception e) {
+
             handleException(response, new ApiException("JWT 인증 처리 중 오류 발생"));
             return;
         }
@@ -54,11 +75,13 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String extractTokenFromRequest(HttpServletRequest request) {
+    private Optional<String> extractTokenFromRequest(HttpServletRequest request) {
 
         String authorization = request.getHeader("Authorization");
-        return (authorization != null && authorization.startsWith("Bearer "))
-                ? authorization.substring(7) : null;
+
+        return (Objects.nonNull(authorization) && authorization.startsWith("Bearer "))
+                ? Optional.of(authorization.substring(7))
+                : Optional.empty();
     }
 
     private void handleException(HttpServletResponse response, ApiException e) throws IOException {
@@ -66,8 +89,7 @@ public class JwtFilter extends OncePerRequestFilter {
         ApiResponse<?> apiResponse = ApiResponse.error(e.getMessage());
         String content = objectMapper.writeValueAsString(apiResponse);
 
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType("application/json");
         response.getWriter().write(content);
         response.getWriter().flush();
     }

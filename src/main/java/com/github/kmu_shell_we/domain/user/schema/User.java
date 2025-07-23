@@ -1,10 +1,16 @@
 package com.github.kmu_shell_we.domain.user.schema;
 
-import com.github.kmu_shell_we.common.database.BaseSchema;
+import com.github.kmu_shell_we.global.infra.mysql.BaseSchema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -41,7 +47,5 @@ public class User extends BaseSchema {
     public enum Role {
         MEMBER,
         ADMIN,
-        ;
     }
-
 }
