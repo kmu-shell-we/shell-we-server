@@ -1,6 +1,5 @@
 package com.github.kmu_shell_we.global.property;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -8,13 +7,18 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "app.jwt")
-public class JwtProperty {
+@ConfigurationProperties(prefix = "app.auth.oauth.wink")
+public class WinkOauthProperty {
 
     @NotBlank
-    String key;
+    String baseUri;
 
     @NotBlank
-    @Min(1)
-    Long tokenExpirationHours;
+    String callbackUri;
+
+    @NotBlank
+    String clientId;
+
+    @NotBlank
+    String clientSecret;
 }

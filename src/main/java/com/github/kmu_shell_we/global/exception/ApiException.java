@@ -1,19 +1,21 @@
 package com.github.kmu_shell_we.global.exception;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
 public class ApiException extends RuntimeException {
+
+    private final String code;
+
+    public ApiException(String code, String message) {
+
+        super(message);
+        this.code = code;
+    }
 
     public ApiException(ApiExceptionCode code) {
 
         super(code.getMessage());
-    }
-
-    public ApiException(String message) {
-
-        super(message);
+        this.code = code.getCode();
     }
 }

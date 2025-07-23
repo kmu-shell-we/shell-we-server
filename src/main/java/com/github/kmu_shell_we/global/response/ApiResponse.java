@@ -1,5 +1,6 @@
 package com.github.kmu_shell_we.global.response;
 
+import com.github.kmu_shell_we.global.exception.ApiException;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -9,21 +10,27 @@ import lombok.RequiredArgsConstructor;
 public class ApiResponse<T> {
 
     private final boolean success;
-    private final String error;
-    private final T content;
+    private final String code;
+    private final String message;
+    private final T data;
 
     public static ApiResponse<Void> ok() {
 
-        return new ApiResponse<>(true, null, null);
+        return ok(null);
     }
 
-    public static <T> ApiResponse<T> ok(T content) {
+    public static <T> ApiResponse<T> ok(T data) {
 
-        return new ApiResponse<>(true, null, content);
+        return new ApiResponse<>(true, null, null, data);
     }
 
-    public static <T> ApiResponse<T> error(String error) {
+    public static <T> ApiResponse<T> error(ApiException e) {
 
-        return new ApiResponse<>(false, error, null);
+        return error(e.getCode(), e.getMessage());
+    }
+
+    public static <T> ApiResponse<T> error(String code, String message) {
+
+        return new ApiResponse<>(false, code, message, null);
     }
 }
