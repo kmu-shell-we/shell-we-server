@@ -1,104 +1,84 @@
 package com.github.kmu_shell_we.global.security.jwt;
 
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kmu_shell_we.domain.auth.exception.AuthExceptions;
+import com.github.kmu_shell_we.domain.user.entity.User;
+import com.github.kmu_shell_we.domain.user.repository.UserRepository;
 import com.github.kmu_shell_we.global.exception.ApiException;
 import com.github.kmu_shell_we.global.response.ApiResponse;
+import com.github.kmu_shell_we.global.security.authentication.UserAuthentication;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final UserDetailsService userDetailsService;
-
-    private final JwtUtil jwtUtil;
+    private final UserRepository repository;
 
     private final ObjectMapper objectMapper;
+    private final JwtUtil jwtUtil;
 
     @Override
-    protected void doFilterInternal(
+    public void doFilterInternal(
             @Nonnull HttpServletRequest request,
             @Nonnull HttpServletResponse response,
             @Nonnull FilterChain filterChain
     ) throws ServletException, IOException {
 
-        Optional<String> accessToken = extractTokenFromRequest(request);
+        String accessToken = extractToken(request);
 
         try {
-            if (accessToken.isPresent() && jwtUtil.validateToken(accessToken.get())) {
+            if (jwtUtil.validateToken(accessToken)) {
 
-                String id = jwtUtil.extractId(accessToken.get());
+                UUID id = jwtUtil.extractId(accessToken);
+                User user = repository.findById(id).orElseThrow(AuthExceptions.AUTHENTICATION_FAILED::toException);
 
-                UserDetails userDetails = userDetailsService.loadUserByUsername(id);
-
-                Authentication authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
+                UserAuthentication authentication = new UserAuthentication(user);
+                authentication.setAuthenticated(true);
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-        } catch (TokenExpiredException e) {
-
-            handleException(response, AuthExceptions.ACCESS_TOKEN_EXPIRED.toException());
-            return;
         } catch (ApiException e) {
 
             handleException(response, e);
-            return;
-        } catch (Exception e) {
-
-            handleException(response, new ApiException("JWT 인증 처리 중 오류 발생"));
             return;
         }
 
         filterChain.doFilter(request, response);
     }
 
-    private Optional<String> extractTokenFromRequest(HttpServletRequest request) {
+    private String extractToken(HttpServletRequest request) {
 
         String authorization = request.getHeader("Authorization");
 
-        return (Objects.nonNull(authorization) && authorization.startsWith("Bearer "))
-                ? Optional.of(authorization.substring(7))
-                : Optional.empty();
+        return (authorization != null && authorization.startsWith("Bearer "))
+                ? authorization.substring(7)
+                : null;
     }
 
     private void handleException(HttpServletResponse response, ApiException e) throws IOException {
 
-        ApiResponse<?> apiResponse = ApiResponse.error(e.getMessage());
+        ApiResponse<?> apiResponse = ApiResponse.error(e);
+
         String content = objectMapper.writeValueAsString(apiResponse);
 
-        response.setContentType("application/json");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding("UTF-8");
+        response.addHeader("Content-Type", "application/json");
         response.getWriter().write(content);
         response.getWriter().flush();
-    }
-
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-
-        String uri = request.getRequestURI();
-
-        return Stream.of("/api/auth/refresh-token").anyMatch(uri::equalsIgnoreCase);
     }
 }

@@ -2,7 +2,8 @@ package com.github.kmu_shell_we.global.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.github.kmu_shell_we.domain.auth.exception.AuthExceptions;
 import com.github.kmu_shell_we.domain.user.entity.User;
 import com.github.kmu_shell_we.global.property.JwtProperty;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,8 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
+import java.util.Objects;
+import java.util.UUID;
 
 @Configuration
 @RequiredArgsConstructor
@@ -27,31 +29,36 @@ public class JwtUtil {
 
     public String generateToken(User user) {
 
-        Instant now = Instant.now();
-
         return JWT.create()
-                .withIssuer("shell-we")
-                .withSubject("access-token")
-                .withIssuedAt(Date.from(now))
-                .withExpiresAt(Date.from(now.plus(jwtProperty.getTokenExpirationHours(), ChronoUnit.HOURS)))
+                .withIssuedAt(Instant.now())
+                .withExpiresAt(Instant.now().plus(jwtProperty.getTokenExpirationHours(), ChronoUnit.HOURS))
                 .withClaim("id", user.getId().toString())
                 .sign(algorithm());
     }
 
+    public UUID extractId(String token) {
+
+        return UUID.fromString(JWT.require(algorithm())
+                .build()
+                .verify(token)
+                .getClaim("id")
+                .asString());
+    }
+
     public boolean validateToken(String token) {
+
+        if (Objects.isNull(token)) return false;
 
         try {
 
-            JWT.require(algorithm()).withIssuer("shell-we").build().verify(token);
+            JWT.require(algorithm()).build().verify(token);
             return true;
-        } catch (JWTVerificationException e) {
+        } catch (TokenExpiredException e) {
+
+            throw AuthExceptions.ACCESS_TOKEN_EXPIRED.toException();
+        } catch (Exception e) {
 
             return false;
         }
-    }
-
-    public String extractId(String token) {
-
-        return JWT.require(algorithm()).withIssuer("shell-we").build().verify(token).getClaim("id").asString();
     }
 }

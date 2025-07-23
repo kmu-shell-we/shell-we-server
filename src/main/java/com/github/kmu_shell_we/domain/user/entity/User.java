@@ -25,19 +25,15 @@ public class User extends BaseSchema {
 
     @Column(unique = true, nullable = false)
     @NotNull
+    String providerId;
+
+    @Column(unique = true, nullable = false)
+    @NotNull
     String studentId;
 
     @Column(nullable = false)
     @NotNull
     String name;
-
-    @Column(unique = true, nullable = false)
-    @NotNull
-    String email;
-
-    @Column(unique = true, nullable = false)
-    @NotNull
-    String phone;
 
     @Column
     String avatar;
