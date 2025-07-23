@@ -1,6 +1,6 @@
 package com.github.kmu_shell_we.global.security.user_details;
 
-import com.github.kmu_shell_we.domain.user.schema.User;
+import com.github.kmu_shell_we.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -3,7 +3,7 @@ package com.github.kmu_shell_we.global.security.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.github.kmu_shell_we.domain.user.schema.User;
+import com.github.kmu_shell_we.domain.user.entity.User;
 import com.github.kmu_shell_we.global.property.JwtProperty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

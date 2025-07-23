@@ -1,8 +1,10 @@
-package com.github.kmu_shell_we.domain.user.schema;
+package com.github.kmu_shell_we.domain.user.entity;
 
 import com.github.kmu_shell_we.global.infra.mysql.BaseSchema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,10 +17,10 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Builder(toBuilder = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
-@EqualsAndHashCode(callSuper = true)
 public class User extends BaseSchema {
 
     @Column(unique = true, nullable = false)
@@ -40,11 +42,13 @@ public class User extends BaseSchema {
     @Column
     String avatar;
 
-    @Column
+    @Column(nullable = false)
     @NotNull
+    @Enumerated(EnumType.STRING)
     Role role;
 
     public enum Role {
+
         MEMBER,
         ADMIN,
     }

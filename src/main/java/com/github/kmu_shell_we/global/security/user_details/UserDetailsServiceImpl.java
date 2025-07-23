@@ -1,8 +1,8 @@
 package com.github.kmu_shell_we.global.security.user_details;
 
 import com.github.kmu_shell_we.domain.auth.exception.AuthExceptions;
+import com.github.kmu_shell_we.domain.user.entity.User;
 import com.github.kmu_shell_we.domain.user.repository.UserRepository;
-import com.github.kmu_shell_we.domain.user.schema.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
