@@ -2,6 +2,7 @@ package com.github.kmu_shell_we.domain.season.service;
 
 import com.github.kmu_shell_we.domain.season.dto.request.CreateSeasonRequest;
 import com.github.kmu_shell_we.domain.season.dto.request.UpdateSeasonRequest;
+import com.github.kmu_shell_we.domain.season.dto.response.SeasonListResponse;
 import com.github.kmu_shell_we.domain.season.dto.response.SeasonResponse;
 import com.github.kmu_shell_we.domain.season.entity.Season;
 import com.github.kmu_shell_we.domain.season.exception.NotFoundSeason;
@@ -9,6 +10,8 @@ import com.github.kmu_shell_we.domain.season.repository.SeasonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -16,6 +19,13 @@ import java.util.UUID;
 public class SeasonService {
 
     private final SeasonRepository seasonRepository;
+
+    public SeasonListResponse getSeasons() {
+
+        List<Season> seasons = seasonRepository.findAll();
+
+        return SeasonListResponse.from(seasons);
+    }
 
     public SeasonResponse createSeason(CreateSeasonRequest request) {
 
@@ -50,5 +60,26 @@ public class SeasonService {
         seasonRepository.deleteById(seasonId);
 
         return SeasonResponse.from(season);
+    }
+
+    public SeasonResponse getSeason(UUID seasonId) {
+
+        Season season = seasonRepository.findById(seasonId).orElseThrow(NotFoundSeason::new);
+
+        return SeasonResponse.from(season);
+    }
+
+    public SeasonResponse getCurrentSeason() {
+
+        LocalDate now = LocalDate.now();
+
+        int year = now.getYear();
+
+        int month = now.getMonthValue();
+        int semester = (month >= 3 && month <= 8) ? 1 : 2;
+
+        Season season = seasonRepository.findByYearAndSemester(year, semester);
+
+        return  SeasonResponse.from(season);
     }
 }

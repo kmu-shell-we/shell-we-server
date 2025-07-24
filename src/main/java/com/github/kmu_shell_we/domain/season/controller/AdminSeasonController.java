@@ -2,6 +2,7 @@ package com.github.kmu_shell_we.domain.season.controller;
 
 import com.github.kmu_shell_we.domain.season.dto.request.CreateSeasonRequest;
 import com.github.kmu_shell_we.domain.season.dto.request.UpdateSeasonRequest;
+import com.github.kmu_shell_we.domain.season.dto.response.SeasonListResponse;
 import com.github.kmu_shell_we.domain.season.dto.response.SeasonResponse;
 import com.github.kmu_shell_we.domain.season.service.SeasonService;
 import com.github.kmu_shell_we.global.response.ApiResponse;
@@ -20,18 +21,35 @@ public class AdminSeasonController {
 
     private final SeasonService seasonService;
 
+    // 시즌 전체 조회
+    @GetMapping
+    public ApiResponse<SeasonListResponse> getSeasons() {
+
+        return ApiResponse.ok(seasonService.getSeasons());
+    }
+
+    // 시즌 상세 조회
+    @GetMapping("/{seasonId}")
+    public ApiResponse<SeasonResponse> getSeason(@PathVariable UUID seasonId) {
+
+        return ApiResponse.ok(seasonService.getSeason(seasonId));
+    }
+
+    // 시즌 생성
     @PostMapping
     public ApiResponse<SeasonResponse> createSeason(@RequestBody @Valid CreateSeasonRequest request) {
 
         return ApiResponse.ok(seasonService.createSeason(request));
     }
 
+    // 시즌 수정
     @PutMapping("/{seasonId}")
     public ApiResponse<SeasonResponse> updateSeason(@PathVariable UUID seasonId, @RequestBody @Valid UpdateSeasonRequest request) {
 
         return ApiResponse.ok(seasonService.updateSeason(seasonId, request));
     }
 
+    // 시즌 삭제
     @DeleteMapping("/{seasonId}")
     public ApiResponse<SeasonResponse> deleteSeason(@PathVariable UUID seasonId) {
 
