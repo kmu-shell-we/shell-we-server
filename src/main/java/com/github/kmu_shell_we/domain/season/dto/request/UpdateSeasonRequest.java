@@ -1,5 +1,6 @@
 package com.github.kmu_shell_we.domain.season.dto.request;
 
+import com.github.kmu_shell_we.domain.season.util.validation.UpdateStartBeforeEndDate;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
+@UpdateStartBeforeEndDate
 public class UpdateSeasonRequest {
 
     @NotBlank
