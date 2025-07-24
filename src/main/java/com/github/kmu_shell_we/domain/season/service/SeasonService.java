@@ -42,4 +42,13 @@ public class SeasonService {
 
         return SeasonResponse.from(season);
     }
+
+    public SeasonResponse deleteSeason(UUID seasonId) {
+
+        Season season = seasonRepository.findById(seasonId).orElseThrow(NotFoundSeason::new);
+
+        seasonRepository.deleteById(seasonId);
+
+        return SeasonResponse.from(season);
+    }
 }
