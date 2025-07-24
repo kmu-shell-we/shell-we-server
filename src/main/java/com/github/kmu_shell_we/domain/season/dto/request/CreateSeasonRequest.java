@@ -1,10 +1,10 @@
 package com.github.kmu_shell_we.domain.season.dto.request;
 
-import com.github.kmu_shell_we.domain.season.util.validation.UpsertStartBeforeEndDate;
 import com.github.kmu_shell_we.domain.season.util.validation.FutureYear;
+import com.github.kmu_shell_we.domain.season.util.validation.UpsertStartBeforeEndDate;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -14,18 +14,18 @@ import java.time.LocalDateTime;
 @UpsertStartBeforeEndDate
 public class CreateSeasonRequest implements UpsertSeasonRequest {
 
-    @NotBlank
+    @NotNull
     @Max(2099)
     Integer year;
 
-    @NotBlank
+    @NotNull
     @Min(1)
     @Max(2)
     Integer semester;
 
-    @NotBlank
+    @NotNull
     LocalDateTime startedAt;
 
-    @NotBlank
+    @NotNull
     LocalDateTime endedAt;
 }
