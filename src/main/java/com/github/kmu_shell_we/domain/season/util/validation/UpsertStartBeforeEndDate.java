@@ -6,10 +6,10 @@ import jakarta.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = CreateStartBeforeEndDateValidator.class)
+@Constraint(validatedBy = UpsertStartBeforeEndDateValidator.class)
 @Target({ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UpdateStartBeforeEndDate {
+public @interface UpsertStartBeforeEndDate {
 
     String message() default "시작일은 종료일보다 앞서야 한다.";
 

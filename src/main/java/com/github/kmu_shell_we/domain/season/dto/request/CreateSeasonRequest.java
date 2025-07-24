@@ -1,6 +1,6 @@
 package com.github.kmu_shell_we.domain.season.dto.request;
 
-import com.github.kmu_shell_we.domain.season.util.validation.CreateStartBeforeEndDate;
+import com.github.kmu_shell_we.domain.season.util.validation.UpsertStartBeforeEndDate;
 import com.github.kmu_shell_we.domain.season.util.validation.FutureYear;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 
 @Data
 @FutureYear
-@CreateStartBeforeEndDate
-public class CreateSeasonRequest {
+@UpsertStartBeforeEndDate
+public class CreateSeasonRequest implements UpsertSeasonRequest {
 
     @NotBlank
     @Max(2099)
