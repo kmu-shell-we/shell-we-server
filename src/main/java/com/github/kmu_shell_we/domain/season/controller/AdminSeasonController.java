@@ -31,4 +31,10 @@ public class AdminSeasonController {
 
         return ApiResponse.ok(seasonService.updateSeason(seasonId, request));
     }
+
+    @DeleteMapping("/{seasonId}")
+    public ApiResponse<SeasonResponse> deleteSeason(@PathVariable UUID seasonId) {
+
+        return ApiResponse.ok(seasonService.deleteSeason(seasonId));
+    }
 }
