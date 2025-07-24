@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UpsertStartBeforeEndDate {
 
-    String message() default "시작일은 종료일보다 앞서야 한다.";
+    String message() default "시작일은 종료일보다 앞서야 합니다.";
 
     Class<?>[] groups() default {};
 
