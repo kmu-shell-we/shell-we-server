@@ -35,6 +35,6 @@ public class SwaggerConfig {
         return new Info()
                 .title("KMU-Shell WE API")
                 .description("KMU-Shell WE의 API 문서입니다.")
-                .version("0.2.0");
+                .version("0.3.0");
     }
 }
