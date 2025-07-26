@@ -47,10 +47,12 @@ public class MissionService {
 
     public MissionResponse updateMission(UUID missionId, UpsertMissionRequest request) {
 
-        Mission mission = missionRepository.findById(missionId).orElseThrow(MissionExceptionCode.NOT_FOUND_MISSION::toException);
-
-        mission.setName(request.getName());
-        mission.setReward(request.getReward());
+        Mission mission = missionRepository.findById(missionId)
+                .orElseThrow(MissionExceptionCode.NOT_FOUND_MISSION::toException)
+                .toBuilder()
+                .name(request.getName())
+                .reward(request.getReward())
+                .build();
 
         return MissionResponse.from(missionRepository.save(mission));
     }
