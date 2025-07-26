@@ -15,15 +15,20 @@ public class UserResponse {
 
     @Schema(description = "사용자 ID", example = "550e8400-e29b-41d4-a716-446655440000")
     UUID id;
+
     @Schema(description = "사용자 생성 시간", example = "2023-10-01T12:00:00")
     LocalDateTime createdAt;
+
     @Schema(description = "학번", example = "20250001")
     String studentId;
+
     @Schema(description = "사용자 이름", example = "홍길동")
     String name;
+
     @Schema(description = "사용자 아바타 URL", example = "https://example.com/avatar.png")
     String avatar;
-    @Schema(description = "사용자 역할", example = "0='MEMBER', 1='ADMIN'")
+
+    @Schema(description = "사용자 역할", example = "ADMIN'")
     User.Role role;
 
     public static UserResponse from(User user) {

@@ -17,7 +17,6 @@ public class SeasonController {
 
     private final SeasonService seasonService;
 
-    // 현재 시즌 조회
     @GetMapping("/current")
     @Tag(name = "시즌 조회", description = "현재 시즌 정보를 조회합니다.")
     public ApiResponse<SeasonResponse> getCurrentSeason() {

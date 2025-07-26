@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-//@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping("/admin/seasons")
 @RequiredArgsConstructor
@@ -25,7 +25,6 @@ public class AdminSeasonController {
 
     private final SeasonService seasonService;
 
-    // 시즌 전체 조회
     @GetMapping
     @Operation(summary = "시즌 전체 조회", description = "시즌 목록을 조회합니다.")
     public ApiResponse<SeasonListResponse> getSeasons() {
@@ -33,7 +32,6 @@ public class AdminSeasonController {
         return ApiResponse.ok(seasonService.getSeasons());
     }
 
-    // 시즌 상세 조회
     @GetMapping("/{seasonId}")
     @Operation(summary = "시즌 상세 조회", description = "특정 시즌의 상세 정보를 조회합니다.")
     public ApiResponse<SeasonResponse> getSeason(
@@ -43,7 +41,6 @@ public class AdminSeasonController {
         return ApiResponse.ok(seasonService.getSeason(seasonId));
     }
 
-    // 시즌 생성
     @PostMapping
     @Operation(summary = "시즌 생성", description = "새로운 시즌을 생성합니다.")
     public ApiResponse<SeasonResponse> createSeason(@RequestBody @Valid CreateSeasonRequest request) {
@@ -51,7 +48,6 @@ public class AdminSeasonController {
         return ApiResponse.ok(seasonService.createSeason(request));
     }
 
-    // 시즌 수정
     @PutMapping("/{seasonId}")
     @Operation(summary = "시즌 수정", description = "특정 시즌의 정보를 수정합니다.")
     public ApiResponse<SeasonResponse> updateSeason(
@@ -62,7 +58,6 @@ public class AdminSeasonController {
         return ApiResponse.ok(seasonService.updateSeason(seasonId, request));
     }
 
-    // 시즌 삭제
     @DeleteMapping("/{seasonId}")
     @Operation(summary = "시즌 삭제", description = "특정 시즌을 삭제합니다.")
     public ApiResponse<SeasonResponse> deleteSeason(

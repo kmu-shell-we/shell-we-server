@@ -14,8 +14,10 @@ public class SimpleSeasonResponse {
 
     @Schema(description = "시즌 ID", example = "550e8400-e29b-41d4-a716-446655440000")
     UUID id;
+
     @Schema(description = "연도", example = "2025")
     Integer year;
+
     @Schema(description = "학기 (1: 1학기, 2: 2학기)", example = "1")
     Integer semester;
 
