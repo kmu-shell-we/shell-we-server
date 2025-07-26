@@ -25,7 +25,7 @@ public class MissionService {
         return MissionListResponse.from(missions);
     }
 
-    public MissionResponse getMissionById(UUID missionId) {
+    public MissionResponse getMission(UUID missionId) {
 
         Mission mission = missionRepository.findById(missionId).orElseThrow(MissionExceptionCode.NOT_FOUND_MISSION::toException);
 

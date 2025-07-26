@@ -39,7 +39,7 @@ public class AdminMissionController {
             @Parameter(description = "미션 ID", example = "123e4567-e89b-12d3-a456-426614174000")
             @PathVariable UUID missionId) {
 
-        return ApiResponse.ok(missionService.getMissionById(missionId));
+        return ApiResponse.ok(missionService.getMission(missionId));
     }
 
 
