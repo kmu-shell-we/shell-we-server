@@ -18,7 +18,6 @@ public class MissionService {
 
     private final MissionRepository missionRepository;
 
-    // 전체 미션 목록 조회
     public MissionListResponse getMissions() {
 
         List<Mission> missions = missionRepository.findAll();
@@ -26,7 +25,6 @@ public class MissionService {
         return MissionListResponse.from(missions);
     }
 
-    // 미션 상세 조회
     public MissionResponse getMissionById(UUID missionId) {
 
         Mission mission = missionRepository.findById(missionId).orElseThrow(MissionExceptionCode.NOT_FOUND_MISSION::toException);
@@ -34,7 +32,6 @@ public class MissionService {
         return MissionResponse.from(mission);
     }
 
-    // 미션 생성
     public MissionResponse createMission(UpsertMissionRequest request) {
 
         Mission savedMission = missionRepository.save(
@@ -48,7 +45,6 @@ public class MissionService {
     }
 
 
-    // 미션 수정
     public MissionResponse updateMission(UUID missionId, UpsertMissionRequest request) {
 
         Mission mission = missionRepository.findById(missionId).orElseThrow(MissionExceptionCode.NOT_FOUND_MISSION::toException);
@@ -59,7 +55,6 @@ public class MissionService {
         return MissionResponse.from(missionRepository.save(mission));
     }
 
-    // 미션 삭제
     public void deleteMission(UUID missionId) {
 
         Mission mission = missionRepository.findById(missionId).orElseThrow(MissionExceptionCode.NOT_FOUND_MISSION::toException);
