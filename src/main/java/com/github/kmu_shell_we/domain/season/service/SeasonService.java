@@ -1,11 +1,11 @@
 package com.github.kmu_shell_we.domain.season.service;
 
+import com.github.kmu_shell_we.domain.mission.exception.SeasonExceptionCode;
 import com.github.kmu_shell_we.domain.season.dto.request.CreateSeasonRequest;
 import com.github.kmu_shell_we.domain.season.dto.request.UpdateSeasonRequest;
 import com.github.kmu_shell_we.domain.season.dto.response.SeasonListResponse;
 import com.github.kmu_shell_we.domain.season.dto.response.SeasonResponse;
 import com.github.kmu_shell_we.domain.season.entity.Season;
-import com.github.kmu_shell_we.domain.season.exception.NotFoundSeason;
 import com.github.kmu_shell_we.domain.season.repository.SeasonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,7 +43,7 @@ public class SeasonService {
 
     public SeasonResponse updateSeason(UUID seasonId, UpdateSeasonRequest request) {
 
-        Season season = seasonRepository.findById(seasonId).orElseThrow(NotFoundSeason::new);
+        Season season = seasonRepository.findById(seasonId).orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException);
 
         season.setStartedAt(request.getStartedAt());
         season.setEndedAt(request.getEndedAt());
@@ -55,7 +55,7 @@ public class SeasonService {
 
     public SeasonResponse deleteSeason(UUID seasonId) {
 
-        Season season = seasonRepository.findById(seasonId).orElseThrow(NotFoundSeason::new);
+        Season season = seasonRepository.findById(seasonId).orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException);
 
         seasonRepository.deleteById(seasonId);
 
@@ -64,7 +64,7 @@ public class SeasonService {
 
     public SeasonResponse getSeason(UUID seasonId) {
 
-        Season season = seasonRepository.findById(seasonId).orElseThrow(NotFoundSeason::new);
+        Season season = seasonRepository.findById(seasonId).orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException);
 
         return SeasonResponse.from(season);
     }

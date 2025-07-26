@@ -4,7 +4,7 @@ import com.github.kmu_shell_we.domain.mission.dto.request.UpsertMissionRequest;
 import com.github.kmu_shell_we.domain.mission.dto.response.MissionListResponse;
 import com.github.kmu_shell_we.domain.mission.dto.response.MissionResponse;
 import com.github.kmu_shell_we.domain.mission.entity.Mission;
-import com.github.kmu_shell_we.domain.mission.exception.NotFoundMission;
+import com.github.kmu_shell_we.domain.mission.exception.MissionExceptionCode;
 import com.github.kmu_shell_we.domain.mission.repository.MissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class MissionService {
     // 미션 상세 조회
     public MissionResponse getMissionById(UUID missionId) {
 
-        Mission mission = missionRepository.findById(missionId).orElseThrow(NotFoundMission::new);
+        Mission mission = missionRepository.findById(missionId).orElseThrow(MissionExceptionCode.NOT_FOUND_MISSION::toException);
 
         return MissionResponse.from(mission);
     }
@@ -51,7 +51,7 @@ public class MissionService {
     // 미션 수정
     public MissionResponse updateMission(UUID missionId, UpsertMissionRequest request) {
 
-        Mission mission = missionRepository.findById(missionId).orElseThrow(NotFoundMission::new);
+        Mission mission = missionRepository.findById(missionId).orElseThrow(MissionExceptionCode.NOT_FOUND_MISSION::toException);
 
         mission.setName(request.getName());
         mission.setReward(request.getReward());
@@ -62,7 +62,7 @@ public class MissionService {
     // 미션 삭제
     public void deleteMission(UUID missionId) {
 
-        Mission mission = missionRepository.findById(missionId).orElseThrow(NotFoundMission::new);
+        Mission mission = missionRepository.findById(missionId).orElseThrow(MissionExceptionCode.NOT_FOUND_MISSION::toException);
 
         missionRepository.delete(mission);
     }
