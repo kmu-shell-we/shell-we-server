@@ -1,18 +1,14 @@
 package com.github.kmu_shell_we.domain.season.service;
 
-import com.github.kmu_shell_we.domain.mission.exception.SeasonExceptionCode;
-import com.github.kmu_shell_we.domain.season.dto.request.CreateSeasonRequest;
-import com.github.kmu_shell_we.domain.season.dto.request.UpdateSeasonRequest;
-import com.github.kmu_shell_we.domain.season.dto.response.SeasonListResponse;
 import com.github.kmu_shell_we.domain.season.dto.response.SeasonResponse;
 import com.github.kmu_shell_we.domain.season.entity.Season;
+import com.github.kmu_shell_we.domain.season.exception.SeasonExceptionCode;
 import com.github.kmu_shell_we.domain.season.repository.SeasonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -20,65 +16,11 @@ public class SeasonService {
 
     private final SeasonRepository seasonRepository;
 
-    public SeasonListResponse getSeasons() {
-
-        List<Season> seasons = seasonRepository.findAll();
-
-        return SeasonListResponse.from(seasons);
-    }
-
-    public SeasonResponse createSeason(CreateSeasonRequest request) {
-
-        Season season = seasonRepository.save(
-                Season.builder()
-                        .year(request.getYear())
-                        .semester(request.getSemester())
-                        .startedAt(request.getStartedAt())
-                        .endedAt(request.getEndedAt())
-                        .build()
-        );
-
-        return SeasonResponse.from(season);
-    }
-
-    public SeasonResponse updateSeason(UUID seasonId, UpdateSeasonRequest request) {
-
-        Season season = seasonRepository.findById(seasonId).orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException);
-
-        season.setStartedAt(request.getStartedAt());
-        season.setEndedAt(request.getEndedAt());
-
-        seasonRepository.save(season);
-
-        return SeasonResponse.from(season);
-    }
-
-    public SeasonResponse deleteSeason(UUID seasonId) {
-
-        Season season = seasonRepository.findById(seasonId).orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException);
-
-        seasonRepository.deleteById(seasonId);
-
-        return SeasonResponse.from(season);
-    }
-
-    public SeasonResponse getSeason(UUID seasonId) {
-
-        Season season = seasonRepository.findById(seasonId).orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException);
-
-        return SeasonResponse.from(season);
-    }
-
+    @Transactional(readOnly = true)
     public SeasonResponse getCurrentSeason() {
 
-        LocalDate now = LocalDate.now();
-
-        int year = now.getYear();
-
-        int month = now.getMonthValue();
-        int semester = (month >= 3 && month <= 8) ? 1 : 2;
-
-        Season season = seasonRepository.findByYearAndSemester(year, semester);
+        Season season = seasonRepository.findCurrent(LocalDateTime.now())
+                .orElseThrow(SeasonExceptionCode.NOT_FOUND_CURRENT_SEASON::toException);
 
         return  SeasonResponse.from(season);
     }

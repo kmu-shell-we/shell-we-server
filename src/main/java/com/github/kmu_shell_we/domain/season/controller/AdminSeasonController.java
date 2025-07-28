@@ -4,7 +4,7 @@ import com.github.kmu_shell_we.domain.season.dto.request.CreateSeasonRequest;
 import com.github.kmu_shell_we.domain.season.dto.request.UpdateSeasonRequest;
 import com.github.kmu_shell_we.domain.season.dto.response.SeasonListResponse;
 import com.github.kmu_shell_we.domain.season.dto.response.SeasonResponse;
-import com.github.kmu_shell_we.domain.season.service.SeasonService;
+import com.github.kmu_shell_we.domain.season.service.AdminSeasonService;
 import com.github.kmu_shell_we.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,7 +23,7 @@ import java.util.UUID;
 @Tag(name = "관지라용 시즌 API", description = "시즌 생성, 수정, 삭제를 위한 API")
 public class AdminSeasonController {
 
-    private final SeasonService seasonService;
+    private final AdminSeasonService seasonService;
 
     @GetMapping
     @Operation(summary = "시즌 전체 조회", description = "시즌 목록을 조회합니다.")
@@ -60,10 +60,12 @@ public class AdminSeasonController {
 
     @DeleteMapping("/{seasonId}")
     @Operation(summary = "시즌 삭제", description = "특정 시즌을 삭제합니다.")
-    public ApiResponse<SeasonResponse> deleteSeason(
+    public ApiResponse<Void> deleteSeason(
             @Parameter(description = "시즌 ID", example = "123e4567-e89b-12d3-a456-426614174000")
             @PathVariable UUID seasonId) {
 
-        return ApiResponse.ok(seasonService.deleteSeason(seasonId));
+        seasonService.deleteSeason(seasonId);
+
+        return  ApiResponse.ok();
     }
 }
