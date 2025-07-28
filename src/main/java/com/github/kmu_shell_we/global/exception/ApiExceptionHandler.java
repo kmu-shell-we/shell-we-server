@@ -54,4 +54,12 @@ public class ApiExceptionHandler {
 
         return ApiResponse.error(e);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ApiResponse<?> exception(Exception e) {
+
+        log.error("", e);
+
+        return ApiResponse.error("GLOBAL_005", "알 수 없는 오류가 발생했습니다.");
+    }
 }
