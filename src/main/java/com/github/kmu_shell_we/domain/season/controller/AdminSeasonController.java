@@ -60,10 +60,10 @@ public class AdminSeasonController {
 
     @DeleteMapping("/{seasonId}")
     @Operation(summary = "시즌 삭제", description = "특정 시즌을 삭제합니다.")
-    public ApiResponse<SeasonResponse> deleteSeason(
+    public void deleteSeason(
             @Parameter(description = "시즌 ID", example = "123e4567-e89b-12d3-a456-426614174000")
             @PathVariable UUID seasonId) {
 
-        return ApiResponse.ok(seasonService.deleteSeason(seasonId));
+        seasonService.deleteSeason(seasonId);
     }
 }
