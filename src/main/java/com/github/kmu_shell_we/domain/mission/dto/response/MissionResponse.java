@@ -21,12 +21,16 @@ public class MissionResponse {
     @Schema(description = "미션 보상", example = "100")
     Integer reward;
 
+    @Schema(description = "미션 타입", example = "DAILY")
+    String type = "DAILY"; // Assuming a default type, can be modified based on
+
     public static MissionResponse from(Mission mission) {
         
         return MissionResponse.of(
                 mission.getId(),
                 mission.getName(),
-                mission.getReward()
+                mission.getReward(),
+                mission.getType().name()
         );
     }
 }
