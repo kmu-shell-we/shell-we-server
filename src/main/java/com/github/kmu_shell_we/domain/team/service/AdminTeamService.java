@@ -28,7 +28,7 @@ public class AdminTeamService {
         Season season = seasonRepository.findById(seasonId)
                 .orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException);
 
-        List<Team> teams = teamRepository.findBySeason(season);
+        List<Team> teams = teamRepository.findAllBySeason(season);
 
         return TeamListResponse.from(teams);
     }
@@ -57,6 +57,7 @@ public class AdminTeamService {
         return TeamResponse.from(team);
     }
 
+    @Transactional
     public void deleteTeam(UUID teamId) {
 
         Team team = teamRepository.findById(teamId)
