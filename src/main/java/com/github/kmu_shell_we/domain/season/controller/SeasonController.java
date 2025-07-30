@@ -3,24 +3,24 @@ package com.github.kmu_shell_we.domain.season.controller;
 import com.github.kmu_shell_we.domain.season.dto.response.SeasonResponse;
 import com.github.kmu_shell_we.domain.season.service.SeasonService;
 import com.github.kmu_shell_we.global.response.ApiResponse;
+import com.github.kmu_shell_we.global.security.guard.MemberGuard;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@PreAuthorize("isAuthenticated()")
+@MemberGuard
 @RestController
 @RequestMapping("/seasons")
 @RequiredArgsConstructor
-@Tag(name = "일반 사용자용 시즌 API", description = "시즌 조회를 위한 API")
+@Tag(name = "시즌")
 public class SeasonController {
 
     private final SeasonService seasonService;
 
     @GetMapping("/current")
-    @Tag(name = "시즌 조회", description = "현재 시즌 정보를 조회합니다.")
+    @Tag(name = "현재 시즌 조회")
     public ApiResponse<SeasonResponse> getCurrentSeason() {
 
         return ApiResponse.ok(seasonService.getCurrentSeason());

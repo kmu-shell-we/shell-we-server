@@ -31,7 +31,8 @@ public class AdminSeasonService {
     @Transactional(readOnly = true)
     public SeasonResponse getSeason(UUID seasonId) {
 
-        Season season = seasonRepository.findById(seasonId).orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException);
+        Season season = seasonRepository.findById(seasonId)
+                .orElseThrow(SeasonExceptionCode.NOT_FOUND::toException);
 
         return SeasonResponse.from(season);
     }
@@ -55,7 +56,7 @@ public class AdminSeasonService {
     public SeasonResponse updateSeason(UUID seasonId, UpdateSeasonRequest request) {
 
         Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException)
+                .orElseThrow(SeasonExceptionCode.NOT_FOUND::toException)
                 .toBuilder()
                 .startedAt(request.getStartedAt())
                 .endedAt(request.getEndedAt())
@@ -68,7 +69,7 @@ public class AdminSeasonService {
     public void deleteSeason(UUID seasonId) {
 
         Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException);
+                .orElseThrow(SeasonExceptionCode.NOT_FOUND::toException);
 
         seasonRepository.delete(season);
     }

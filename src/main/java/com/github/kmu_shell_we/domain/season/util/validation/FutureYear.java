@@ -7,11 +7,11 @@ import java.lang.annotation.*;
 
 @Documented
 @Constraint(validatedBy = FutureYearValidator.class)
-@Target({ElementType.TYPE })
+@Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FutureYear {
 
-    String message() default "현재 연도 이후의 시즌만 생성할 수 있어야 합니다.";
+    String message() default "현재 연도보다 미래이어야 합니다.";
 
     Class<?>[] groups() default {};
 

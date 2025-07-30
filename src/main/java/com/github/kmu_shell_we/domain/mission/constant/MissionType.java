@@ -4,6 +4,5 @@ public enum MissionType {
 
     DAILY,
     WEEKLY,
-    SPECIAL
+    SPECIAL,
 }
-

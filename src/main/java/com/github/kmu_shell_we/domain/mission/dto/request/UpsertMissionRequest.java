@@ -6,15 +6,19 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@Schema(description = "미션 생성 및 수정 요청 DTO")
+@Schema(description = "미션 생성 및 수정 요청")
 public class UpsertMissionRequest {
 
     @NotNull
-    @Schema(description = "미션 이름", example = "릴스 찍기")
+    @Schema(description = "종류")
+    MissionType type;
+
+    @NotNull
+    @Schema(description = "이름")
     String name;
 
     @NotNull
-    @Schema(description = "미션 보상", example = "150")
+    @Schema(description = "보상")
     Integer reward;
 
     @NotNull

@@ -1,15 +1,15 @@
 package com.github.kmu_shell_we.domain.season.entity;
 
+import com.github.kmu_shell_we.domain.mission._season_mission.entity.SeasonMission;
+import com.github.kmu_shell_we.domain.team.entity.Team;
 import com.github.kmu_shell_we.global.infra.mysql.BaseSchema;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"year", "semester"})})
@@ -36,4 +36,10 @@ public class Season extends BaseSchema {
     @Column(nullable = false)
     @NotNull
     LocalDateTime endedAt;
+
+    @OneToMany(mappedBy = "season", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    List<Team> teams;
+
+    @OneToMany(mappedBy = "season", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    List<SeasonMission> missions;
 }

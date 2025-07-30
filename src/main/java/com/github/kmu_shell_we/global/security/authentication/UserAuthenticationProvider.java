@@ -15,7 +15,8 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
             return authentication;
         }
 
-        throw new AuthenticationException("Unsupported authentication type") {};
+        throw new AuthenticationException("Unsupported authentication type") {
+        };
     }
 
     @Override
