@@ -1,5 +1,6 @@
 package com.github.kmu_shell_we.domain.mission.dto.response;
 
+import com.github.kmu_shell_we.domain.mission.constant.MissionType;
 import com.github.kmu_shell_we.domain.mission.entity.Mission;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -30,7 +31,7 @@ public class MissionResponse {
                 mission.getId(),
                 mission.getName(),
                 mission.getReward(),
-                MissionType.valueOf(mission.getType().name())
+                mission.getType()
         );
     }
 }

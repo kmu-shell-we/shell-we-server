@@ -1,7 +1,6 @@
 package com.github.kmu_shell_we.domain.mission.dto.request;
 
-import com.github.kmu_shell_we.domain.mission.dto.response.MissionType;
-import com.github.kmu_shell_we.domain.mission.entity.Mission;
+import com.github.kmu_shell_we.domain.mission.constant.MissionType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
