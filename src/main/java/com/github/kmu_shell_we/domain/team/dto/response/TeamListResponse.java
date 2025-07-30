@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor(staticName = "of")
-@Schema(description = "팀 목록 응답 DTO")
+@Schema(description = "팀 목록 응답")
 public class TeamListResponse {
 
     @Schema(description = "팀 목록")

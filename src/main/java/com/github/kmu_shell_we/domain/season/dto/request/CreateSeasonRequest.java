@@ -11,27 +11,27 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-@FutureYear
 @UpsertStartBeforeEndDate
-@Schema(description = "학기 생성 요청 DTO")
+@Schema(description = "학기 생성 요청")
 public class CreateSeasonRequest implements UpsertSeasonRequest {
 
-    @NotNull
     @Max(2099)
-    @Schema(description = "시즌 연도", example = "2025")
+    @NotNull
+    @FutureYear
+    @Schema(description = "연도")
     Integer year;
 
-    @NotNull
     @Min(1)
     @Max(2)
-    @Schema(description = "시즌 학기 (1: 1학기, 2: 2학기)", example = "1")
+    @NotNull
+    @Schema(description = "학기")
     Integer semester;
 
     @NotNull
-    @Schema(description = "시즌 시작 일시", example = "2025-03-01T00:00:00")
+    @Schema(description = "시작 일시")
     LocalDateTime startedAt;
 
     @NotNull
-    @Schema(description = "시즌 종료 일시", example = "2025-08-31T23:59:59")
+    @Schema(description = "종료 일시")
     LocalDateTime endedAt;
 }

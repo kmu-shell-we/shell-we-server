@@ -9,20 +9,17 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor(staticName = "of")
-@Schema(description = "팀 응답 DTO")
+@Schema(description = "간략화된 팀 응답")
 public class SimpleTeamResponse {
 
     @Schema(description = "팀 ID")
     UUID id;
 
-    @Schema(description = "팀 이름")
+    @Schema(description = "이름")
     String name;
 
     public static SimpleTeamResponse from(Team team) {
 
-        return SimpleTeamResponse.of(
-                team.getId(),
-                team.getName()
-        );
+        return SimpleTeamResponse.of(team.getId(), team.getName());
     }
 }

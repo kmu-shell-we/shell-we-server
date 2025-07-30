@@ -3,7 +3,6 @@ package com.github.kmu_shell_we.domain.team.entity;
 import com.github.kmu_shell_we.domain.season.entity.Season;
 import com.github.kmu_shell_we.global.infra.mysql.BaseSchema;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
@@ -15,16 +14,14 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Team extends BaseSchema {
 
-    @Column
+    @Column(nullable = false)
     String name;
 
-    @Column(columnDefinition = "integer default 0")
-    @NotNull
+    @Column(nullable = false)
     @Builder.Default
     Integer experience = 0;
 
-    @Column(columnDefinition = "integer default 0")
-    @NotNull
+    @Column(nullable = false)
     @Builder.Default
     Integer point = 0;
 

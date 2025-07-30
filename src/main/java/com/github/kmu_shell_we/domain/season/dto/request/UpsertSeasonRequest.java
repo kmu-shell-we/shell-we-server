@@ -5,5 +5,6 @@ import java.time.LocalDateTime;
 public interface UpsertSeasonRequest {
 
     LocalDateTime getStartedAt();
+
     LocalDateTime getEndedAt();
 }

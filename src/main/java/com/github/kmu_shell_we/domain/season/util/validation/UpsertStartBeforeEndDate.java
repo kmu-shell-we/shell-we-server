@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 
 @Documented
 @Constraint(validatedBy = UpsertStartBeforeEndDateValidator.class)
-@Target({ElementType.TYPE })
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UpsertStartBeforeEndDate {
 
