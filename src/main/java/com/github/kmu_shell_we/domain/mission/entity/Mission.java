@@ -4,11 +4,14 @@ import com.github.kmu_shell_we.global.infra.mysql.BaseSchema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+
+import java.nio.charset.Charset;
 
 @Entity
 @Getter
 @Setter
-@Builder(toBuilder = true)
+@SuperBuilder(toBuilder = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,9 +28,9 @@ public class Mission extends BaseSchema {
     @Column(nullable = false)
     @NotNull
     @Enumerated(EnumType.STRING)
-    Mission.Type type;
+    Mission.MissionType type;
 
-    public enum Type {
+    public enum MissionType {
 
         DAILY,
         WEEKLY,
