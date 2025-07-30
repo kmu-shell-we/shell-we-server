@@ -1,15 +1,17 @@
 package com.github.kmu_shell_we.domain.mission.entity;
 
+import com.github.kmu_shell_we.domain.mission.constant.MissionType;
 import com.github.kmu_shell_we.global.infra.mysql.BaseSchema;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 
 @Entity
 @Getter
 @Setter
-@Builder(toBuilder = true)
+@SuperBuilder(toBuilder = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,4 +24,9 @@ public class Mission extends BaseSchema {
     @Column(nullable = false)
     @NotNull
     Integer reward;
+
+    @Column(nullable = false)
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    MissionType type;
 }

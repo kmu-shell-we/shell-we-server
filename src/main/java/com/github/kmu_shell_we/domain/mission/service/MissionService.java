@@ -38,6 +38,7 @@ public class MissionService {
                 Mission.builder()
                         .name(request.getName())
                         .reward(request.getReward())
+                        .type(request.getType())
                         .build()
         );
 
@@ -53,6 +54,7 @@ public class MissionService {
                         .toBuilder()
                         .name(request.getName())
                         .reward(request.getReward())
+                        .type(request.getType())
                         .build()
         );
 
