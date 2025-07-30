@@ -22,7 +22,7 @@ public class MissionResponse {
     Integer reward;
 
     @Schema(description = "미션 타입", example = "DAILY")
-    String type = "DAILY"; // Assuming a default type, can be modified based on
+    MissionType type;
 
     public static MissionResponse from(Mission mission) {
         
@@ -30,7 +30,7 @@ public class MissionResponse {
                 mission.getId(),
                 mission.getName(),
                 mission.getReward(),
-                mission.getType().name()
+                MissionType.valueOf(mission.getType().name())
         );
     }
 }

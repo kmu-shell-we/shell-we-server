@@ -3,6 +3,7 @@ package com.github.kmu_shell_we.domain.mission.service;
 import com.github.kmu_shell_we.domain.mission.dto.request.UpsertMissionRequest;
 import com.github.kmu_shell_we.domain.mission.dto.response.MissionListResponse;
 import com.github.kmu_shell_we.domain.mission.dto.response.MissionResponse;
+import com.github.kmu_shell_we.domain.mission.dto.response.MissionType;
 import com.github.kmu_shell_we.domain.mission.entity.Mission;
 import com.github.kmu_shell_we.domain.mission.exception.MissionExceptionCode;
 import com.github.kmu_shell_we.domain.mission.repository.MissionRepository;
@@ -38,7 +39,7 @@ public class MissionService {
                 Mission.builder()
                         .name(request.getName())
                         .reward(request.getReward())
-                        .type(request.getType())
+                        .type(Mission.MissionType.valueOf(request.getType().name()))
                         .build()
         );
 
@@ -54,7 +55,7 @@ public class MissionService {
                         .toBuilder()
                         .name(request.getName())
                         .reward(request.getReward())
-                        .type(request.getType())
+                        .type(Mission.MissionType.valueOf(request.getType().name()))
                         .build()
         );
 

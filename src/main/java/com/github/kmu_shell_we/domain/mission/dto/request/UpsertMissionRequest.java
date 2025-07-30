@@ -1,5 +1,6 @@
 package com.github.kmu_shell_we.domain.mission.dto.request;
 
+import com.github.kmu_shell_we.domain.mission.dto.response.MissionType;
 import com.github.kmu_shell_we.domain.mission.entity.Mission;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -19,5 +20,5 @@ public class UpsertMissionRequest {
 
     @NotNull
     @Schema(description = "미션 타입", example = "WEEKLY")
-    Mission.Type type;
+    MissionType type;
 }
