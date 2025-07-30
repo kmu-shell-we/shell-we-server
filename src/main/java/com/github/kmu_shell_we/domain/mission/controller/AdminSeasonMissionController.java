@@ -32,18 +32,6 @@ public class AdminSeasonMissionController {
         return ApiResponse.ok(seasonMissionService.getSeasonMissionsBySeasonId(seasonId));
     }
 
-
-    @GetMapping("/{missionId}")
-    @Operation(summary = "특정 시즌 미션 상세 조회", description = "특정 시즌에 속한 미션의 상세 정보를 조회합니다.")
-    public ApiResponse<MissionResponse> getSeasonMissionById(
-            @Parameter(description = "시즌 ID", example = "123e4567-e89b-12d3-a456-426614174000")
-            @PathVariable UUID seasonId,
-            @Parameter(description = "미션 ID", example = "123e4567-e89b-12d3-a456-426614174001")
-            @PathVariable UUID missionId) {
-
-        return ApiResponse.ok(seasonMissionService.getSeasonMissionBySeasonIdAndMissionId(seasonId, missionId));
-    }
-
     @PostMapping("/{missionId}")
     @Operation(summary = "시즌 미션 생성", description = "특정 시즌에 새로운 미션을 추가합니다.")
     public ApiResponse<MissionResponse> createSeasonMission(
@@ -54,19 +42,6 @@ public class AdminSeasonMissionController {
 
         return ApiResponse.ok(seasonMissionService.createSeasonMission(seasonId, missionId));
     }
-
-    @PutMapping("/{missionId}")
-    @Operation(summary = "시즌 미션 수정", description = "특정 시즌에 속한 미션의 정보를 수정합니다.")
-    public ApiResponse<MissionResponse> updateSeasonMission(
-            @Parameter(description = "시즌 ID", example = "123e4567-e89b-12d3-a456-426614174000")
-            @PathVariable UUID seasonId,
-            @Parameter(description = "미션 ID", example = "123e4567-e89b-12d3-a456-426614174001")
-            @PathVariable UUID missionId,
-            @RequestBody UpsertSeasonMissionRequest request) {
-
-        return ApiResponse.ok(seasonMissionService.updateSeasonMission(seasonId, missionId, request));
-    }
-
 
     @DeleteMapping("/{missionId}")
     @Operation(summary = "시즌 미션 삭제", description = "특정 시즌에 속한 미션을 삭제합니다.")

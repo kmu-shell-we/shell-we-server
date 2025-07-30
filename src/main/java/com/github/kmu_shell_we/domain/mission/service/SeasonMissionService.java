@@ -34,15 +34,8 @@ public class SeasonMissionService {
         return MissionListResponse.from(seasonMissions.stream().map(SeasonMission::getMission).toList());
     }
 
-    @Transactional
-    public MissionResponse getSeasonMissionBySeasonIdAndMissionId(UUID seasonId, UUID missionId) {
 
-        SeasonMission seasonMission = seasonMissionRepository.findBySeasonAndMission(
-                seasonRepository.findById(seasonId).orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException),
-                missionRepository.findById(missionId).orElseThrow(MissionExceptionCode.NOT_FOUND_MISSION::toException)
-                );
 
-        return MissionResponse.from(seasonMission.getMission());
     }
 
     @Transactional
@@ -55,22 +48,6 @@ public class SeasonMissionService {
                 SeasonMission.builder()
                         .season(season)
                         .mission(mission)
-                        .build()
-        );
-
-        return MissionResponse.from(seasonMission.getMission());
-    }
-
-    @Transactional
-    public MissionResponse updateSeasonMission(UUID seasonId, UUID missionId, UpsertSeasonMissionRequest request) {
-
-        SeasonMission seasonMission = seasonMissionRepository.save(
-                seasonMissionRepository.findBySeasonAndMission(
-                        seasonRepository.findById(seasonId).orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException),
-                        missionRepository.findById(missionId).orElseThrow(MissionExceptionCode.NOT_FOUND_MISSION::toException)
-                ).toBuilder()
-                        .season(seasonRepository.findById(request.getSeasonId()).orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException))
-                        .mission(missionRepository.findById(request.getMissionId()).orElseThrow(MissionExceptionCode.NOT_FOUND_MISSION::toException))
                         .build()
         );
 

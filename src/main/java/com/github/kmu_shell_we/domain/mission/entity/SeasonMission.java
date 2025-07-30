@@ -18,11 +18,9 @@ public class SeasonMission extends BaseSchema {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id", nullable = false)
-    @EqualsAndHashCode.Include
     private Mission mission;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "season_id", nullable = false)
-    @EqualsAndHashCode.Include
     private Season season;
 }
