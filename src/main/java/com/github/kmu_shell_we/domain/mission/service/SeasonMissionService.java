@@ -10,7 +10,7 @@ import com.github.kmu_shell_we.domain.mission.repository.MissionRepository;
 import com.github.kmu_shell_we.domain.mission.repository.SeasonMissionRepository;
 import com.github.kmu_shell_we.domain.season.entity.Season;
 import com.github.kmu_shell_we.domain.season.repository.SeasonRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ public class SeasonMissionService {
     private final SeasonRepository seasonRepository;
     private final MissionRepository missionRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public MissionListResponse getSeasonMissionsBySeasonId(UUID seasonId) {
 
         Season season = seasonRepository.findById(seasonId).orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException);
