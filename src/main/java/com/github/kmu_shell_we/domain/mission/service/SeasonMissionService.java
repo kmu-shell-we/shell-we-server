@@ -1,6 +1,5 @@
 package com.github.kmu_shell_we.domain.mission.service;
 
-import com.github.kmu_shell_we.domain.mission.dto.request.UpsertSeasonMissionRequest;
 import com.github.kmu_shell_we.domain.mission.dto.response.MissionListResponse;
 import com.github.kmu_shell_we.domain.mission.dto.response.MissionResponse;
 import com.github.kmu_shell_we.domain.mission.entity.Mission;
@@ -16,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,13 +29,11 @@ public class SeasonMissionService {
     @Transactional
     public MissionListResponse getSeasonMissionsBySeasonId(UUID seasonId) {
 
-        List<SeasonMission> seasonMissions = seasonMissionRepository.findAllSeasonMissionsBySeasonId(seasonId);
+        Season season = seasonRepository.findById(seasonId).orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException);
+
+        List<SeasonMission> seasonMissions = seasonMissionRepository.findAllBySeason(season);
 
         return MissionListResponse.from(seasonMissions.stream().map(SeasonMission::getMission).toList());
-    }
-
-
-
     }
 
     @Transactional
@@ -57,10 +55,11 @@ public class SeasonMissionService {
     @Transactional
     public void deleteSeasonMission(UUID seasonId, UUID missionId) {
 
-        SeasonMission seasonMission = seasonMissionRepository.findBySeasonAndMission(
-                seasonRepository.findById(seasonId).orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException),
-                missionRepository.findById(missionId).orElseThrow(MissionExceptionCode.NOT_FOUND_MISSION::toException)
-        );
+        Season season = seasonRepository.findById(seasonId).orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException);
+        Mission mission = missionRepository.findById(missionId).orElseThrow(MissionExceptionCode.NOT_FOUND_MISSION::toException);
+
+        SeasonMission seasonMission = seasonMissionRepository.findBySeasonAndMission(season, mission)
+                .orElseThrow(MissionExceptionCode.NOT_FOUND_SEASON_MISSION::toException);
 
         seasonMissionRepository.delete(seasonMission);
     }

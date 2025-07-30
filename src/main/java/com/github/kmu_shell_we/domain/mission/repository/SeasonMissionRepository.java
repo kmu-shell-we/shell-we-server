@@ -6,11 +6,12 @@ import com.github.kmu_shell_we.domain.season.entity.Season;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface SeasonMissionRepository extends JpaRepository<SeasonMission, UUID> {
 
-    SeasonMission findBySeasonAndMission(Season season, Mission mission);
+    Optional<SeasonMission> findBySeasonAndMission(Season season, Mission mission);
 
-    List<SeasonMission> findAllSeasonMissionsBySeasonId(UUID seasonId);
+    List<SeasonMission> findAllBySeason(Season season);
 }
