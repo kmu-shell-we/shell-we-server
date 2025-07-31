@@ -1,5 +1,6 @@
 package com.github.kmu_shell_we.domain.season._team.dto.response;
 
+import com.github.kmu_shell_we.domain.season._team._user_team.entity.UserTeam;
 import com.github.kmu_shell_we.domain.season._team.entity.Team;
 import com.github.kmu_shell_we.domain.user.dto.response.SimpleUserResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,9 +20,14 @@ public class GetOtherTeamResponse {
     @Schema(description = "멤버")
     List<SimpleUserResponse> users;
 
-    // TODO: 팀 멤버 연결 후, 실제 멤버 받아오기
     public static GetOtherTeamResponse from(Team team) {
 
-        return GetOtherTeamResponse.of(OtherTeamResponse.from(team), List.of());
+        return GetOtherTeamResponse.of(
+                OtherTeamResponse.from(team),
+                team.getUserTeams().stream()
+                        .map(UserTeam::getUser)
+                        .map(SimpleUserResponse::from)
+                        .toList()
+        );
     }
 }

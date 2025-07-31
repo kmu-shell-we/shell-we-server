@@ -4,12 +4,14 @@ import com.github.kmu_shell_we.domain.season._team.dto.response.GetOtherTeamResp
 import com.github.kmu_shell_we.domain.season._team.dto.response.GetTeamResponse;
 import com.github.kmu_shell_we.domain.season._team.dto.response.TeamListResponse;
 import com.github.kmu_shell_we.domain.season._team.service.TeamService;
+import com.github.kmu_shell_we.domain.user.entity.User;
 import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.MemberGuard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,9 +37,11 @@ public class TeamController {
 
     @GetMapping("/me")
     @Operation(summary = "내 팀 조회")
-    public ApiResponse<GetTeamResponse> getMyTeam(@Parameter(description = "시즌 ID") @PathVariable UUID seasonId) {
-
-        return ApiResponse.ok(teamService.getMyTeam(seasonId));
+    public ApiResponse<GetTeamResponse> getMyTeam(
+            @Parameter(description = "시즌 ID") @PathVariable UUID seasonId,
+            @AuthenticationPrincipal User user
+    ) {
+        return ApiResponse.ok(teamService.getMyTeam(seasonId, user));
     }
 
     @GetMapping("/{teamId}")

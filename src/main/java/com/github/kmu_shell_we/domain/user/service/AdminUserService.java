@@ -26,7 +26,7 @@ public class AdminUserService {
 
     public UserResponse getUser(UUID userId) {
 
-        User user = userRepository.findById(userId).orElseThrow(UserExceptions.NOT_FOUND::toException);
+        User user = userRepository.findById(userId).orElseThrow(UserExceptions.NOT_FOUND_USER::toException);
 
         return UserResponse.from(user);
     }

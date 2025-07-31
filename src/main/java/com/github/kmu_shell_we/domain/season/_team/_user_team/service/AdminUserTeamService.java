@@ -10,7 +10,7 @@ import com.github.kmu_shell_we.domain.season._team.entity.Team;
 import com.github.kmu_shell_we.domain.season._team.exception.TeamExceptions;
 import com.github.kmu_shell_we.domain.season._team.repository.TeamRepository;
 import com.github.kmu_shell_we.domain.user.entity.User;
-import com.github.kmu_shell_we.domain.user.exception.UserExceptionCode;
+import com.github.kmu_shell_we.domain.user.exception.UserExceptions;
 import com.github.kmu_shell_we.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class AdminUserTeamService {
                 .orElseThrow(TeamExceptions.NOT_FOUND_TEAM::toException);
 
         User user = userRepository.findById(userId)
-                .orElseThrow(UserExceptionCode.NOT_FOUND_USER::toException);
+                .orElseThrow(UserExceptions.NOT_FOUND_USER::toException);
 
         userTeamRepository.save(
                 UserTeam.builder()
@@ -57,7 +57,7 @@ public class AdminUserTeamService {
                 .orElseThrow(TeamExceptions.NOT_FOUND_TEAM::toException);
 
         User user = userRepository.findById(userId)
-                .orElseThrow(UserExceptionCode.NOT_FOUND_USER::toException);
+                .orElseThrow(UserExceptions.NOT_FOUND_USER::toException);
 
         UserTeam userTeam = userTeamRepository.findByUserAndTeam(user, team)
                         .orElseThrow(UserTeamExceptions.NOT_FOUND_USER_TEAM::toException);

@@ -1,9 +1,12 @@
 package com.github.kmu_shell_we.domain.season._team.entity;
 
+import com.github.kmu_shell_we.domain.season._team._user_team.entity.UserTeam;
 import com.github.kmu_shell_we.domain.season.entity.Season;
 import com.github.kmu_shell_we.global.infra.mysql.BaseSchema;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,4 +31,7 @@ public class Team extends BaseSchema {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "season_id", nullable = false)
     Season season;
+
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    List<UserTeam> userTeams;
 }

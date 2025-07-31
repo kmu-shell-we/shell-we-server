@@ -1,11 +1,11 @@
 package com.github.kmu_shell_we.domain.user.entity;
 
+import com.github.kmu_shell_we.domain.season._team._user_team.entity.UserTeam;
 import com.github.kmu_shell_we.global.infra.mysql.BaseSchema;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,6 +31,9 @@ public class User extends BaseSchema {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     Role role;
+
+    @OneToMany(mappedBy = "user", cascade =  CascadeType.ALL, orphanRemoval = true,  fetch = FetchType.LAZY)
+    List<UserTeam> userTeams;
 
     public enum Role {
 
