@@ -1,5 +1,6 @@
 package com.github.kmu_shell_we.domain.season._team.service;
 
+import com.github.kmu_shell_we.domain.season._team._user_team.exception.UserTeamExceptions;
 import com.github.kmu_shell_we.domain.season._team.entity.Team;
 import com.github.kmu_shell_we.domain.season._team.exception.TeamExceptions;
 import com.github.kmu_shell_we.domain.season._team.repository.TeamRepository;
@@ -7,6 +8,7 @@ import com.github.kmu_shell_we.domain.season.entity.Season;
 import com.github.kmu_shell_we.domain.season.exception.SeasonExceptions;
 import com.github.kmu_shell_we.domain.season.repository.SeasonRepository;
 import com.github.kmu_shell_we.domain.season._team.dto.response.*;
+import com.github.kmu_shell_we.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,15 +34,19 @@ public class TeamService {
         return TeamListResponse.from(teams);
     }
 
-    // TODO: 팀 멤버 연결 후, 실제 멤버 받아오기
-    public GetTeamResponse getMyTeam(UUID seasonId) {
+    @Transactional(readOnly = true)
+    public GetTeamResponse getMyTeam(User user, UUID seasonId) {
 
         Season season = seasonRepository.findById(seasonId)
                 .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
 
-        return null;
+        Team team = teamRepository.findByUserAndSeason(user, season)
+                .orElseThrow(UserTeamExceptions.NOT_FOUND_USER_TEAM::toException);
+
+        return GetTeamResponse.from(team);
     }
 
+    @Transactional(readOnly = true)
     public GetOtherTeamResponse getOtherTeam(UUID seasonId, UUID teamId) {
 
         Season season = seasonRepository.findById(seasonId)

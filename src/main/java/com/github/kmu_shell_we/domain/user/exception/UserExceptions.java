@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum UserExceptions implements ApiExceptionCode {
 
-    NOT_FOUND("USER-001", "유저를 찾을 수 없습니다."),
+    NOT_FOUND_USER("USER_001", "유저를 찾을 수 없습니다."),
     ;
 
     private final String code;
