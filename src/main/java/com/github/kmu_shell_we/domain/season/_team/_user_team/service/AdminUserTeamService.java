@@ -1,5 +1,6 @@
 package com.github.kmu_shell_we.domain.season._team._user_team.service;
 
+import com.github.kmu_shell_we.domain.season._team._user_team.exception.UserTeamExceptions;
 import com.github.kmu_shell_we.domain.season.entity.Season;
 import com.github.kmu_shell_we.domain.season.exception.SeasonExceptions;
 import com.github.kmu_shell_we.domain.season.repository.SeasonRepository;
@@ -21,9 +22,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AdminUserTeamService {
 
+    private final UserRepository userRepository;
     private final SeasonRepository seasonRepository;
     private final TeamRepository teamRepository;
-    private final UserRepository userRepository;
     private final UserTeamRepository userTeamRepository;
 
     @Transactional
@@ -58,6 +59,9 @@ public class AdminUserTeamService {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserExceptionCode.NOT_FOUND_USER::toException);
 
-        userTeamRepository.deleteByUserAndTeam(user, team);
+        UserTeam userTeam = userTeamRepository.findByUserAndTeam(user, team)
+                        .orElseThrow(UserTeamExceptions.NOT_FOUND_USER_TEAM::toException);
+
+        userTeamRepository.delete(userTeam);
     }
 }
