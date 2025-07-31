@@ -1,8 +1,9 @@
-package com.github.kmu_shell_we.domain.team.controller;
+package com.github.kmu_shell_we.domain.season._team.controller;
 
-import com.github.kmu_shell_we.domain.team.dto.response.GetTeamResponse;
-import com.github.kmu_shell_we.domain.team.dto.response.TeamResponse;
-import com.github.kmu_shell_we.domain.team.service.AdminTeamService;
+import com.github.kmu_shell_we.domain.season._team.dto.response.GetTeamResponse;
+import com.github.kmu_shell_we.domain.season._team.dto.response.TeamListResponse;
+import com.github.kmu_shell_we.domain.season._team.dto.response.TeamResponse;
+import com.github.kmu_shell_we.domain.season._team.service.AdminTeamService;
 import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.AdminGuard;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,6 +22,13 @@ import java.util.UUID;
 public class AdminTeamController {
 
     private final AdminTeamService adminTeamService;
+
+    @GetMapping
+    @Operation(summary = "전체 팀 목록 조회")
+    public ApiResponse<TeamListResponse> getTeams(@Parameter(description = "시즌 ID") @PathVariable UUID seasonId) {
+
+        return ApiResponse.ok(adminTeamService.getTeams(seasonId));
+    }
 
     @GetMapping("/{teamId}")
     @Operation(summary = "팀 상세 조회")

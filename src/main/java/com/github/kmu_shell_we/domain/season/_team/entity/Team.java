@@ -1,4 +1,4 @@
-package com.github.kmu_shell_we.domain.team.entity;
+package com.github.kmu_shell_we.domain.season._team.entity;
 
 import com.github.kmu_shell_we.domain.season.entity.Season;
 import com.github.kmu_shell_we.global.infra.mysql.BaseSchema;
