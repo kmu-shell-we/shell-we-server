@@ -35,18 +35,10 @@ public class TeamService {
     }
 
     @Transactional(readOnly = true)
-    public GetTeamResponse getMyTeam(UUID seasonId, User user) {
+    public GetTeamResponse getMyTeam(User user, UUID seasonId) {
 
         Season season = seasonRepository.findById(seasonId)
                 .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
-
-        // LazyInitializationException이 발생해서 수정했습니다.
-        // TeamRepository를 확인해 주세요.
-//        Team team = user.getUserTeams().stream()
-//                .filter(userTeam1 -> userTeam1.getTeam().getSeason().equals(season))
-//                .findFirst()
-//                .orElseThrow(UserTeamExceptions.NOT_FOUND_USER_TEAM::toException)
-//                .getTeam();
 
         Team team = teamRepository.findByUserAndSeason(user, season)
                 .orElseThrow(UserTeamExceptions.NOT_FOUND_USER_TEAM::toException);

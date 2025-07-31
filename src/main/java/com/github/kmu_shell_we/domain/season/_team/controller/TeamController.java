@@ -38,10 +38,10 @@ public class TeamController {
     @GetMapping("/me")
     @Operation(summary = "내 팀 조회")
     public ApiResponse<GetTeamResponse> getMyTeam(
-            @Parameter(description = "시즌 ID") @PathVariable UUID seasonId,
-            @AuthenticationPrincipal User user
+            @AuthenticationPrincipal User user,
+            @Parameter(description = "시즌 ID") @PathVariable UUID seasonId
     ) {
-        return ApiResponse.ok(teamService.getMyTeam(seasonId, user));
+        return ApiResponse.ok(teamService.getMyTeam(user, seasonId));
     }
 
     @GetMapping("/{teamId}")
