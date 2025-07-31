@@ -9,24 +9,20 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor(staticName = "of")
-@Schema(description = "시즌 응답 DTO")
+@Schema(description = "간략화된 시즌 응답")
 public class SimpleSeasonResponse {
 
-    @Schema(description = "시즌 ID", example = "550e8400-e29b-41d4-a716-446655440000")
+    @Schema(description = "시즌 ID")
     UUID id;
 
-    @Schema(description = "연도", example = "2025")
+    @Schema(description = "연도")
     Integer year;
 
-    @Schema(description = "학기 (1: 1학기, 2: 2학기)", example = "1")
+    @Schema(description = "학기")
     Integer semester;
 
     public static SimpleSeasonResponse from(Season season) {
 
-        return SimpleSeasonResponse.of(
-                season.getId(),
-                season.getYear(),
-                season.getSemester()
-        );
+        return SimpleSeasonResponse.of(season.getId(), season.getYear(), season.getSemester());
     }
 }

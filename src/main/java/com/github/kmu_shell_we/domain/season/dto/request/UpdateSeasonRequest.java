@@ -9,14 +9,14 @@ import java.time.LocalDateTime;
 
 @Data
 @UpsertStartBeforeEndDate
-@Schema(description = "시즌 수정 요청 DTO")
+@Schema(description = "시즌 수정 요청")
 public class UpdateSeasonRequest implements UpsertSeasonRequest {
 
     @NotNull
-    @Schema(description = "시즌 시작 일시", example = "2025-03-01T00:00:00")
+    @Schema(description = "시작 일시")
     LocalDateTime startedAt;
 
     @NotNull
-    @Schema(description = "시즌 종료 일시", example = "2025-08-31T23:59:59")
+    @Schema(description = "종료 일시")
     LocalDateTime endedAt;
 }

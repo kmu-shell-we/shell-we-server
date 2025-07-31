@@ -41,15 +41,15 @@ public class AuthService {
 
             JSONObject response =
                     instance.post("%s/api/application/oauth/token".formatted(winkOauthProperty.getBaseUri()))
-                    .contentType(ContentType.APPLICATION_JSON)
-                    .body(Map.ofEntries(
-                            Map.entry("clientId", winkOauthProperty.getClientId()),
-                            Map.entry("clientSecret", winkOauthProperty.getClientSecret()),
-                            Map.entry("token", token)
-                    ))
-                    .asJson()
-                    .getBody()
-                    .getObject();
+                            .contentType(ContentType.APPLICATION_JSON)
+                            .body(Map.ofEntries(
+                                    Map.entry("clientId", winkOauthProperty.getClientId()),
+                                    Map.entry("clientSecret", winkOauthProperty.getClientSecret()),
+                                    Map.entry("token", token)
+                            ))
+                            .asJson()
+                            .getBody()
+                            .getObject();
 
             if (!response.getBoolean("success")) {
 

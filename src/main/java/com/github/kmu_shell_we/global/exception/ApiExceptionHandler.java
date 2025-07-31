@@ -16,20 +16,20 @@ import java.util.Objects;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-    @ExceptionHandler({ NoResourceFoundException.class, HttpRequestMethodNotSupportedException.class})
-    public ApiResponse<?> noResourceFoundException(Exception e) {
+    @ExceptionHandler({NoResourceFoundException.class, HttpRequestMethodNotSupportedException.class})
+    public ApiResponse<?> noResourceFoundException() {
 
         return ApiResponse.error("GLOBAL_001", "요청하신 리소스를 찾을 수 없습니다.");
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ApiResponse<?> httpMessageNotReadableException(HttpMessageNotReadableException e) {
+    public ApiResponse<?> httpMessageNotReadableException() {
 
         return ApiResponse.error("GLOBAL_002", "요청 데이터가 올바르지 않습니다.");
     }
 
     @ExceptionHandler(AuthorizationDeniedException.class)
-    public ApiResponse<?> authorizationDeniedException(AuthorizationDeniedException e) {
+    public ApiResponse<?> authorizationDeniedException() {
 
         return ApiResponse.error("GLOBAL_003", "권한이 없습니다.");
     }
@@ -44,7 +44,7 @@ public class ApiExceptionHandler {
 
         String field = e.getBindingResult().getFieldError().getField();
         String message = e.getBindingResult().getFieldError().getDefaultMessage();
-        String errorMessage = String.format("%s은(는) %s",  field, message);
+        String errorMessage = String.format("%s은(는) %s", field, message);
 
         return ApiResponse.error("GLOBAL_005", errorMessage);
     }

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor(staticName = "of")
-@Schema(description = "학기 목록 응답 DTO")
+@Schema(description = "학기 목록 응답")
 public class SeasonListResponse {
 
     @Schema(description = "학기 목록")
@@ -19,5 +19,4 @@ public class SeasonListResponse {
 
         return SeasonListResponse.of(seasons.stream().map(SimpleSeasonResponse::from).toList());
     }
-
 }
