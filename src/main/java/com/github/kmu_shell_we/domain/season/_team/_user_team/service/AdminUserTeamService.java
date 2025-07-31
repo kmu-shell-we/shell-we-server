@@ -1,13 +1,13 @@
-package com.github.kmu_shell_we.domain.team._userTeam.service;
+package com.github.kmu_shell_we.domain.season._team._user_team.service;
 
 import com.github.kmu_shell_we.domain.season.entity.Season;
-import com.github.kmu_shell_we.domain.season.exception.SeasonExceptionCode;
+import com.github.kmu_shell_we.domain.season.exception.SeasonExceptions;
 import com.github.kmu_shell_we.domain.season.repository.SeasonRepository;
-import com.github.kmu_shell_we.domain.team._userTeam.entity.UserTeam;
-import com.github.kmu_shell_we.domain.team._userTeam.repository.UserTeamRepository;
-import com.github.kmu_shell_we.domain.team.entity.Team;
-import com.github.kmu_shell_we.domain.team.exception.TeamExceptionCode;
-import com.github.kmu_shell_we.domain.team.repository.TeamRepository;
+import com.github.kmu_shell_we.domain.season._team._user_team.entity.UserTeam;
+import com.github.kmu_shell_we.domain.season._team._user_team.repository.UserTeamRepository;
+import com.github.kmu_shell_we.domain.season._team.entity.Team;
+import com.github.kmu_shell_we.domain.season._team.exception.TeamExceptions;
+import com.github.kmu_shell_we.domain.season._team.repository.TeamRepository;
 import com.github.kmu_shell_we.domain.user.entity.User;
 import com.github.kmu_shell_we.domain.user.exception.UserExceptionCode;
 import com.github.kmu_shell_we.domain.user.repository.UserRepository;
@@ -30,10 +30,10 @@ public class AdminUserTeamService {
     public void addMember(UUID seasonId, UUID teamId, UUID userId) {
 
         Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException);
+                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
 
         Team team = teamRepository.findByIdAndSeason(teamId, season)
-                .orElseThrow(TeamExceptionCode.NOT_FOUND_TEAM::toException);
+                .orElseThrow(TeamExceptions.NOT_FOUND_TEAM::toException);
 
         User user = userRepository.findById(userId)
                 .orElseThrow(UserExceptionCode.NOT_FOUND_USER::toException);
@@ -50,10 +50,10 @@ public class AdminUserTeamService {
     public void deleteMember(UUID seasonId, UUID teamId, UUID userId) {
 
         Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptionCode.NOT_FOUND_SEASON::toException);
+                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
 
         Team team = teamRepository.findByIdAndSeason(teamId, season)
-                .orElseThrow(TeamExceptionCode.NOT_FOUND_TEAM::toException);
+                .orElseThrow(TeamExceptions.NOT_FOUND_TEAM::toException);
 
         User user = userRepository.findById(userId)
                 .orElseThrow(UserExceptionCode.NOT_FOUND_USER::toException);

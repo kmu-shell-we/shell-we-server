@@ -1,4 +1,4 @@
-package com.github.kmu_shell_we.domain.team.exception;
+package com.github.kmu_shell_we.domain.season._team.exception;
 
 import com.github.kmu_shell_we.global.exception.ApiExceptionCode;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum TeamExceptionCode implements ApiExceptionCode {
+public enum TeamExceptions implements ApiExceptionCode {
 
     NOT_FOUND_TEAM("TEAM_001", "팀을 찾을 수 없습니다."),
     ;

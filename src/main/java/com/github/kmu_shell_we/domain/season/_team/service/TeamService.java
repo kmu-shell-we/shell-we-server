@@ -1,14 +1,12 @@
-package com.github.kmu_shell_we.domain.team.service;
+package com.github.kmu_shell_we.domain.season._team.service;
 
+import com.github.kmu_shell_we.domain.season._team.entity.Team;
+import com.github.kmu_shell_we.domain.season._team.exception.TeamExceptions;
+import com.github.kmu_shell_we.domain.season._team.repository.TeamRepository;
 import com.github.kmu_shell_we.domain.season.entity.Season;
-import com.github.kmu_shell_we.domain.season.exception.SeasonExceptionCode;
+import com.github.kmu_shell_we.domain.season.exception.SeasonExceptions;
 import com.github.kmu_shell_we.domain.season.repository.SeasonRepository;
-import com.github.kmu_shell_we.domain.team.dto.response.GetOtherTeamResponse;
-import com.github.kmu_shell_we.domain.team.dto.response.GetTeamResponse;
-import com.github.kmu_shell_we.domain.team.dto.response.TeamListResponse;
-import com.github.kmu_shell_we.domain.team.entity.Team;
-import com.github.kmu_shell_we.domain.team.exception.TeamExceptions;
-import com.github.kmu_shell_we.domain.team.repository.TeamRepository;
+import com.github.kmu_shell_we.domain.season._team.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +25,7 @@ public class TeamService {
     public TeamListResponse getTeams(UUID seasonId) {
 
         Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptionCode.NOT_FOUND::toException);
+                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
 
         List<Team> teams = teamRepository.findAllBySeason(season);
 
@@ -38,7 +36,7 @@ public class TeamService {
     public GetTeamResponse getMyTeam(UUID seasonId) {
 
         Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptionCode.NOT_FOUND::toException);
+                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
 
         return null;
     }
@@ -46,9 +44,10 @@ public class TeamService {
     public GetOtherTeamResponse getOtherTeam(UUID seasonId, UUID teamId) {
 
         Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptionCode.NOT_FOUND::toException);
+                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
 
-        Team team = teamRepository.findByIdAndSeason(teamId, season).orElseThrow(TeamExceptions.NOT_FOUND::toException);
+        Team team = teamRepository.findByIdAndSeason(teamId, season)
+                .orElseThrow(TeamExceptions.NOT_FOUND_TEAM::toException);
 
         return GetOtherTeamResponse.from(team);
     }

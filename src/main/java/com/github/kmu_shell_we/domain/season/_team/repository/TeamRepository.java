@@ -1,7 +1,7 @@
-package com.github.kmu_shell_we.domain.team.repository;
+package com.github.kmu_shell_we.domain.season._team.repository;
 
 import com.github.kmu_shell_we.domain.season.entity.Season;
-import com.github.kmu_shell_we.domain.team.entity.Team;
+import com.github.kmu_shell_we.domain.season._team.entity.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

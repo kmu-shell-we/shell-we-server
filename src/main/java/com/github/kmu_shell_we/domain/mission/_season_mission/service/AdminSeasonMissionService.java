@@ -9,7 +9,7 @@ import com.github.kmu_shell_we.domain.mission.entity.Mission;
 import com.github.kmu_shell_we.domain.mission.exception.MissionExceptions;
 import com.github.kmu_shell_we.domain.mission.repository.MissionRepository;
 import com.github.kmu_shell_we.domain.season.entity.Season;
-import com.github.kmu_shell_we.domain.season.exception.SeasonExceptionCode;
+import com.github.kmu_shell_we.domain.season.exception.SeasonExceptions;
 import com.github.kmu_shell_we.domain.season.repository.SeasonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class AdminSeasonMissionService {
     public MissionListResponse getSeasonMissions(UUID seasonId) {
 
         Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptionCode.NOT_FOUND::toException);
+                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
 
         List<SeasonMission> seasonMissions = seasonMissionRepository.findAllBySeason(season);
 
@@ -41,7 +41,7 @@ public class AdminSeasonMissionService {
     public MissionResponse createSeasonMission(UUID seasonId, UUID missionId) {
 
         Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptionCode.NOT_FOUND::toException);
+                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
 
         Mission mission = missionRepository.findById(missionId)
                 .orElseThrow(MissionExceptions.NOT_FOUND::toException);
@@ -60,7 +60,7 @@ public class AdminSeasonMissionService {
     public void deleteSeasonMission(UUID seasonId, UUID missionId) {
 
         Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptionCode.NOT_FOUND::toException);
+                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
 
         Mission mission = missionRepository.findById(missionId)
                 .orElseThrow(MissionExceptions.NOT_FOUND::toException);

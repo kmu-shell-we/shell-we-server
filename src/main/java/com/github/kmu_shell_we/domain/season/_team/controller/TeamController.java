@@ -1,9 +1,9 @@
-package com.github.kmu_shell_we.domain.team.controller;
+package com.github.kmu_shell_we.domain.season._team.controller;
 
-import com.github.kmu_shell_we.domain.team.dto.response.GetOtherTeamResponse;
-import com.github.kmu_shell_we.domain.team.dto.response.GetTeamResponse;
-import com.github.kmu_shell_we.domain.team.dto.response.TeamListResponse;
-import com.github.kmu_shell_we.domain.team.service.TeamService;
+import com.github.kmu_shell_we.domain.season._team.dto.response.GetOtherTeamResponse;
+import com.github.kmu_shell_we.domain.season._team.dto.response.GetTeamResponse;
+import com.github.kmu_shell_we.domain.season._team.dto.response.TeamListResponse;
+import com.github.kmu_shell_we.domain.season._team.service.TeamService;
 import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.MemberGuard;
 import io.swagger.v3.oas.annotations.Operation;

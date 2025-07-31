@@ -1,6 +1,6 @@
-package com.github.kmu_shell_we.domain.team._userTeam.entity;
+package com.github.kmu_shell_we.domain.season._team._user_team.entity;
 
-import com.github.kmu_shell_we.domain.team.entity.Team;
+import com.github.kmu_shell_we.domain.season._team.entity.Team;
 import com.github.kmu_shell_we.domain.user.entity.User;
 import com.github.kmu_shell_we.global.infra.mysql.BaseSchema;
 import jakarta.persistence.Entity;

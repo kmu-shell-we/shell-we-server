@@ -20,8 +20,4 @@ public class UpsertMissionRequest {
     @NotNull
     @Schema(description = "보상")
     Integer reward;
-
-    @NotNull
-    @Schema(description = "미션 타입", example = "WEEKLY")
-    MissionType type;
 }
