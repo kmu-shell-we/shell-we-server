@@ -15,5 +15,8 @@ public class RedisProperty {
     String host;
 
     @NotNull
-    int port;
+    Integer port;
+
+    @NotBlank
+    String password;
 }
