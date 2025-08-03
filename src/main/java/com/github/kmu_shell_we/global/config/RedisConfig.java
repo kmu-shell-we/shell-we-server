@@ -12,7 +12,7 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 @RequiredArgsConstructor
 public class RedisConfig {
 
-    private final RedisProperty  redisProperty;
+    private final RedisProperty redisProperty;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {

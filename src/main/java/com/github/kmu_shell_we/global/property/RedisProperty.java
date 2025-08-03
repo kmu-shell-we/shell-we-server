@@ -17,6 +17,5 @@ public class RedisProperty {
     @NotNull
     Integer port;
 
-    @NotBlank
     String password;
 }
