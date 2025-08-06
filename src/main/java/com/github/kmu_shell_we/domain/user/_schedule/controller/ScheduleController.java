@@ -11,10 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @MemberGuard
 @RestController
@@ -33,6 +30,13 @@ public class ScheduleController {
     ) {
 
         return ApiResponse.ok(scheduleService.upsertMySchedule(request, user));
+    }
+
+    @GetMapping("/schedules")
+    @Operation(summary = "내 시간표 조회")
+    public ApiResponse<ScheduleListResponse> getMySchedule(@AuthenticationPrincipal User user) {
+
+        return ApiResponse.ok(scheduleService.getMySchedule(user));
     }
 }
 

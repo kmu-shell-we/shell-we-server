@@ -8,8 +8,6 @@ import com.github.kmu_shell_we.domain.user._schedule.entity.Schedule;
 import com.github.kmu_shell_we.domain.user._schedule.exception.ScheduleExceptions;
 import com.github.kmu_shell_we.domain.user._schedule.repository.ScheduleRepository;
 import com.github.kmu_shell_we.domain.user.entity.User;
-import com.github.kmu_shell_we.domain.user.exception.UserExceptions;
-import com.github.kmu_shell_we.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,14 +24,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScheduleService {
 
-    private final UserRepository userRepository;
     private final ScheduleRepository scheduleRepository;
 
     @Transactional
     public ScheduleListResponse upsertMySchedule(UpsertScheduleRequest request, User user) {
-
-        // user 유효성 검사
-        User user1 = userRepository.findById(user.getId()).orElseThrow(UserExceptions.NOT_FOUND_USER::toException);
 
         // 1. identifier 추출
         String identifier = extractIdentifier(request.getUrl());
@@ -50,7 +44,7 @@ public class ScheduleService {
             List<Schedule> schedules = new ArrayList<>();
 
             for (ArrayList<Object> time : times) {
-                Schedule schedule = new Schedule((Schedule.DayOfWeek) time.get(0), (String) time.get(1), (String) time.get(2), user1);
+                Schedule schedule = new Schedule((Schedule.DayOfWeek) time.get(0), (String) time.get(1), (String) time.get(2), user);
                 schedules.add(schedule);
                 scheduleRepository.save(schedule);
             }
@@ -147,5 +141,13 @@ public class ScheduleService {
             case "6" -> Schedule.DayOfWeek.SUNDAY;
             default -> null;
         };
+    }
+
+    @Transactional(readOnly = true)
+    public ScheduleListResponse getMySchedule(User user) {
+
+        List<Schedule> schedules = scheduleRepository.findByUser(user);
+
+        return ScheduleListResponse.from(schedules);
     }
 }
