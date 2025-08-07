@@ -7,10 +7,16 @@ plugins {
 group = 'com.github.kmu_shell_we'
 version = '0.4.0'
 
+compileJava.options.encoding = 'UTF-8'
+
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(21)
 	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
 }
 
 configurations {
@@ -36,12 +42,7 @@ dependencies {
 	implementation 'com.auth0:java-jwt:4.4.0'
 	implementation 'com.konghq:unirest-java-core:4.5.0'
 	implementation 'com.konghq:unirest-objectmapper-jackson:4.2.9'
-	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.2' // Use the latest stable version available
+	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.2'
 	implementation 'org.apache.commons:commons-lang3:3.18.0'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9'
-}
-
-compileJava.options.encoding = 'UTF-8'
-tasks.withType(JavaCompile) {
-	options.encoding = 'UTF-8'
 }

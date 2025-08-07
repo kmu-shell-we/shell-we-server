@@ -8,8 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ScheduleExceptions implements ApiExceptionCode {
 
-    NOT_FOUND_SCHEDULE("SCHEDULE_001", "시간표를 불러올 수 없습니다."),
-    SCHEDULE_PARSE_FAILED("SCHEDULE_002", "시간표를 파싱하는데 실패했습니다.")
+    NOT_FOUND_SCHEDULE("SCHEDULE_001", "시간표를 찾을 수 없습니다."),
     ;
 
     private final String code;
