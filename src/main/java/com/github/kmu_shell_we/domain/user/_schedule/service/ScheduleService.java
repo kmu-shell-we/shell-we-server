@@ -26,19 +26,27 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class ScheduleService {
 
-    private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36";
     private final ScheduleRepository scheduleRepository;
+
+    private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36";
 
     @Transactional(readOnly = true)
     public ScheduleResponse getMySchedule(User user) {
 
-        return null;
+        Map<DayOfWeek, List<TimeRange>> collect = scheduleRepository.findAllByUser(user).stream()
+                .collect(Collectors.groupingBy(
+                        Schedule::getDayOfWeek,
+                        Collectors.mapping(TimeRange::from, Collectors.toList())
+                ));
+
+        return ScheduleResponse.of(collect);
     }
 
-    // TODO: 세이브 전에 기존 시간표 삭제
     @Transactional
     @SneakyThrows(IOException.class)
     public ScheduleResponse upsertMySchedule(User user, String identifier) {
+
+        scheduleRepository.deleteByUser(user);
 
         byte[] response = Unirest.post("https://api.everytime.kr/find/timetable/table/friend")
                 .contentType(ContentType.APPLICATION_FORM_URLENCODED.getMimeType())
