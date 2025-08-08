@@ -29,10 +29,8 @@ public class TeamMissionController {
     @GetMapping
     @Operation(summary = "팀 미션 목록 조회")
     public ApiResponse<TeamMissionListResponse> getTeamMissions(
-            @Parameter(description = "시즌 ID")
-            @PathVariable UUID seasonId,
-            @Parameter(description = "팀 ID")
-            @PathVariable UUID teamId
+            @Parameter(description = "시즌 ID") @PathVariable UUID seasonId,
+            @Parameter(description = "팀 ID") @PathVariable UUID teamId
     ) {
 
         return ApiResponse.ok(teamMissionService.getTeamMissions(seasonId, teamId));

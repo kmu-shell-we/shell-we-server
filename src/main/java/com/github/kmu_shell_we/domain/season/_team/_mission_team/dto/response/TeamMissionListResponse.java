@@ -8,8 +8,8 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@AllArgsConstructor(staticName = "of")
 @Schema(description = "팀 미션 목록 응답")
+@AllArgsConstructor(staticName = "of")
 public class TeamMissionListResponse {
 
     @Schema(description = "팀 미션 목록")

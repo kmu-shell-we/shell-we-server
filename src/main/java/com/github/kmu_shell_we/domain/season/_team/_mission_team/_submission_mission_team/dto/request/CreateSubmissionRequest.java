@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@Schema(description = "팀 미션 제출")
+@Schema(description = "팀 미션 제출 요청")
 public class CreateSubmissionRequest {
 
     @NotNull

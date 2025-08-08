@@ -8,13 +8,13 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor(staticName = "of")
-@Schema(description = "팀 미션 응답")
+@Schema(description = "제출 응답")
 public class SubmissionResponse {
 
-    @Schema(description = "팀 미션 목록")
+    @Schema(description = "팀 미션")
     TeamMissionResponse teamMissionResponse;
 
-    @Schema(description = "팀 미션 이미지 URL")
+    @Schema(description = "팀 미션 인증 사진 URL")
     String image;
 
     public static SubmissionResponse from(Submission submission) {
