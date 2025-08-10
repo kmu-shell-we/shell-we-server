@@ -1,14 +1,14 @@
 package com.github.kmu_shell_we.domain.season._team._user_team.service;
 
-import com.github.kmu_shell_we.domain.season._team._user_team.exception.UserTeamExceptions;
-import com.github.kmu_shell_we.domain.season.entity.Season;
-import com.github.kmu_shell_we.domain.season.exception.SeasonExceptions;
-import com.github.kmu_shell_we.domain.season.repository.SeasonRepository;
 import com.github.kmu_shell_we.domain.season._team._user_team.entity.UserTeam;
+import com.github.kmu_shell_we.domain.season._team._user_team.exception.UserTeamExceptions;
 import com.github.kmu_shell_we.domain.season._team._user_team.repository.UserTeamRepository;
 import com.github.kmu_shell_we.domain.season._team.entity.Team;
 import com.github.kmu_shell_we.domain.season._team.exception.TeamExceptions;
 import com.github.kmu_shell_we.domain.season._team.repository.TeamRepository;
+import com.github.kmu_shell_we.domain.season.entity.Season;
+import com.github.kmu_shell_we.domain.season.exception.SeasonExceptions;
+import com.github.kmu_shell_we.domain.season.repository.SeasonRepository;
 import com.github.kmu_shell_we.domain.user.entity.User;
 import com.github.kmu_shell_we.domain.user.exception.UserExceptions;
 import com.github.kmu_shell_we.domain.user.repository.UserRepository;
@@ -38,6 +38,11 @@ public class AdminUserTeamService {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(UserExceptions.NOT_FOUND_USER::toException);
+
+        if (userTeamRepository.findByUserAndTeam(user, team).isPresent()) {
+
+            throw UserTeamExceptions.ALREADY_MEMBER.toException();
+        }
 
         userTeamRepository.save(
                 UserTeam.builder()

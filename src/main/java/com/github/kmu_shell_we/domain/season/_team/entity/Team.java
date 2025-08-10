@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Team extends BaseSchema {
 
-    @Column(nullable = false)
+    @Column
     String name;
 
     @Column(nullable = false)
