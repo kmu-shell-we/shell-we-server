@@ -43,7 +43,7 @@ public class TeamScheduleService {
 
         for (UUID userId : users) {
 
-            User user = userRepository.findByIdWithSchedule(userId)
+            User user = userRepository.findById(userId)
                     .orElseThrow(UserExceptions.NOT_FOUND_USER::toException);
 
             userTeamRepository.findByUserAndTeam(user, team)

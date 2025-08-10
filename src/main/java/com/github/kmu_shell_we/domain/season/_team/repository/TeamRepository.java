@@ -19,9 +19,9 @@ public interface TeamRepository extends JpaRepository<Team, UUID> {
     List<Team> findAllBySeason(Season season);
 
     @Query("""
-        SELECT t FROM Team t
-        JOIN UserTeam ut ON t = ut.team
-        WHERE ut.user = :user AND t.season = :season
-        """)
+            SELECT t FROM Team t
+            JOIN UserTeam ut ON t = ut.team
+            WHERE ut.user = :user AND t.season = :season
+            """)
     Optional<Team> findByUserAndSeason(User user, Season season);
 }

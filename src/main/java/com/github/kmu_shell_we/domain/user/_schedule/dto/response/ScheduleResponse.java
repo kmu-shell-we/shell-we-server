@@ -20,10 +20,10 @@ public class ScheduleResponse {
     public static ScheduleResponse from(List<Schedule> schedules) {
 
         Map<DayOfWeek, List<TimeRange>> collect = schedules.stream()
-        .collect(Collectors.groupingBy(
-                Schedule::getDayOfWeek,
-                Collectors.mapping(TimeRange::from, Collectors.toList())
-        ));
+                .collect(Collectors.groupingBy(
+                        Schedule::getDayOfWeek,
+                        Collectors.mapping(TimeRange::from, Collectors.toList())
+                ));
 
         return ScheduleResponse.of(collect);
     }

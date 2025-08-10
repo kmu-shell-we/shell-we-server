@@ -3,6 +3,7 @@ package com.github.kmu_shell_we.domain.season._team._schedule.controller;
 import com.github.kmu_shell_we.domain.season._team._schedule.dto.response.TeamScheduleResponse;
 import com.github.kmu_shell_we.domain.season._team._schedule.service.TeamScheduleService;
 import com.github.kmu_shell_we.global.response.ApiResponse;
+import com.github.kmu_shell_we.global.security.guard.MemberGuard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+@MemberGuard
 @Tag(name = "팀 시간표")
 @RestController
 @RequiredArgsConstructor
