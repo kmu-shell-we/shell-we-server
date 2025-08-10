@@ -34,10 +34,12 @@ public class User extends BaseSchema {
     Role role;
 
     @OneToMany(mappedBy = "user", cascade =  CascadeType.ALL, orphanRemoval = true,  fetch = FetchType.LAZY)
-    List<UserTeam> userTeams;
+    @Builder.Default
+    List<UserTeam> userTeams = List.of();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    List<Schedule> schedules;
+    @Builder.Default
+    List<Schedule> schedules = List.of();
 
     public enum Role {
 

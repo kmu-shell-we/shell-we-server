@@ -5,14 +5,10 @@ import com.github.kmu_shell_we.domain.season.dto.request.UpdateSeasonRequest;
 import com.github.kmu_shell_we.domain.season.dto.response.SeasonListResponse;
 import com.github.kmu_shell_we.domain.season.dto.response.SeasonResponse;
 import com.github.kmu_shell_we.domain.season.entity.Season;
-import com.github.kmu_shell_we.domain.season.exception.SeasonExceptions;
 import com.github.kmu_shell_we.domain.season.repository.SeasonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -23,18 +19,7 @@ public class AdminSeasonService {
     @Transactional(readOnly = true)
     public SeasonListResponse getSeasons() {
 
-        List<Season> seasons = seasonRepository.findAll();
-
-        return SeasonListResponse.from(seasons);
-    }
-
-    @Transactional(readOnly = true)
-    public SeasonResponse getSeason(UUID seasonId) {
-
-        Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
-
-        return SeasonResponse.from(season);
+        return SeasonListResponse.from(seasonRepository.findAll());
     }
 
     @Transactional
@@ -53,23 +38,20 @@ public class AdminSeasonService {
     }
 
     @Transactional
-    public SeasonResponse updateSeason(UUID seasonId, UpdateSeasonRequest request) {
+    public SeasonResponse updateSeason(Season season, UpdateSeasonRequest request) {
 
-        Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException)
-                .toBuilder()
-                .startedAt(request.getStartedAt())
-                .endedAt(request.getEndedAt())
-                .build();
+        season = seasonRepository.save(
+                season.toBuilder()
+                        .startedAt(request.getStartedAt())
+                        .endedAt(request.getEndedAt())
+                        .build()
+        );
 
         return SeasonResponse.from(season);
     }
 
     @Transactional
-    public void deleteSeason(UUID seasonId) {
-
-        Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
+    public void deleteSeason(Season season) {
 
         seasonRepository.delete(season);
     }

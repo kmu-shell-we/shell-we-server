@@ -6,6 +6,7 @@ import com.github.kmu_shell_we.domain.user._schedule.dto.response.ScheduleRespon
 import com.github.kmu_shell_we.domain.user._schedule.entity.Schedule;
 import com.github.kmu_shell_we.domain.user._schedule.repository.ScheduleRepository;
 import com.github.kmu_shell_we.domain.user.entity.User;
+import com.github.kmu_shell_we.global.config.CustomConfig;
 import kong.unirest.core.ContentType;
 import kong.unirest.core.Unirest;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +23,9 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class ScheduleService {
 
+    private final static XmlMapper xmlMapper = new XmlMapper();
     private final ScheduleRepository scheduleRepository;
-
-    private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36";
+    private final CustomConfig.UserAgentHolder userAgentHolder;
 
     @Transactional(readOnly = true)
     public ScheduleResponse getMySchedule(User user) {
@@ -42,12 +43,12 @@ public class ScheduleService {
 
         byte[] response = Unirest.post("https://api.everytime.kr/find/timetable/table/friend")
                 .contentType(ContentType.APPLICATION_FORM_URLENCODED.getMimeType())
-                .header("User-Agent", USER_AGENT)
+                .header("User-Agent", userAgentHolder.getUserAgent())
                 .field("identifier", identifier)
                 .asBytes()
                 .getBody();
 
-        List<Schedule> schedules = new XmlMapper().readTree(response)
+        List<Schedule> schedules = xmlMapper.readTree(response)
                 .get("table")
                 .get("subject")
                 .valueStream()

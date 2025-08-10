@@ -21,9 +21,9 @@ public class UserSchedulePair {
     private final SimpleUserResponse user;
     Map<DayOfWeek, List<TimeRange>> schedules;
 
-    public static UserSchedulePair from(User user, List<Schedule> schedules) {
+    public static UserSchedulePair from(User user) {
 
-        Map<DayOfWeek, List<TimeRange>> collect = schedules.stream()
+        Map<DayOfWeek, List<TimeRange>> collect = user.getSchedules().stream()
                 .collect(Collectors.groupingBy(
                         Schedule::getDayOfWeek,
                         Collectors.mapping(TimeRange::from, Collectors.toList())
