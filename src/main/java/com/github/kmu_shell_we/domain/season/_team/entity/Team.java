@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Team extends BaseSchema {
 
-    @Column(nullable = false)
+    @Column
     String name;
 
     @Column(nullable = false)
@@ -33,5 +33,6 @@ public class Team extends BaseSchema {
     Season season;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    List<UserTeam> userTeams;
+    @Builder.Default
+    List<UserTeam> userTeams = List.of();
 }

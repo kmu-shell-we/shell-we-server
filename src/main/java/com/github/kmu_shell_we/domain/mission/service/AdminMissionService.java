@@ -4,14 +4,10 @@ import com.github.kmu_shell_we.domain.mission.dto.request.UpsertMissionRequest;
 import com.github.kmu_shell_we.domain.mission.dto.response.MissionListResponse;
 import com.github.kmu_shell_we.domain.mission.dto.response.MissionResponse;
 import com.github.kmu_shell_we.domain.mission.entity.Mission;
-import com.github.kmu_shell_we.domain.mission.exception.MissionExceptions;
 import com.github.kmu_shell_we.domain.mission.repository.MissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,15 +18,11 @@ public class AdminMissionService {
     @Transactional(readOnly = true)
     public MissionListResponse getMissions() {
 
-        List<Mission> missions = missionRepository.findAll();
-
-        return MissionListResponse.from(missions);
+        return MissionListResponse.from(missionRepository.findAll());
     }
 
     @Transactional(readOnly = true)
-    public MissionResponse getMission(UUID missionId) {
-
-        Mission mission = missionRepository.findById(missionId).orElseThrow(MissionExceptions.NOT_FOUND::toException);
+    public MissionResponse getMission(Mission mission) {
 
         return MissionResponse.from(mission);
     }
@@ -38,33 +30,31 @@ public class AdminMissionService {
     @Transactional
     public MissionResponse createMission(UpsertMissionRequest request) {
 
-        Mission savedMission = missionRepository.save(
+        Mission mission = missionRepository.save(
                 Mission.builder()
                         .name(request.getName())
                         .reward(request.getReward())
                         .build()
         );
 
-        return MissionResponse.from(savedMission);
+        return MissionResponse.from(mission);
     }
 
     @Transactional
-    public MissionResponse updateMission(UUID missionId, UpsertMissionRequest request) {
+    public MissionResponse updateMission(Mission mission, UpsertMissionRequest request) {
 
-        Mission mission = missionRepository.findById(missionId)
-                .orElseThrow(MissionExceptions.NOT_FOUND::toException)
-                .toBuilder()
-                .name(request.getName())
-                .reward(request.getReward())
-                .build();
+        mission = missionRepository.save(
+                mission.toBuilder()
+                        .name(request.getName())
+                        .reward(request.getReward())
+                        .build()
+        );
 
         return MissionResponse.from(mission);
     }
 
     @Transactional
-    public void deleteMission(UUID missionId) {
-
-        Mission mission = missionRepository.findById(missionId).orElseThrow(MissionExceptions.NOT_FOUND::toException);
+    public void deleteMission(Mission mission) {
 
         missionRepository.delete(mission);
     }

@@ -4,6 +4,7 @@ package com.github.kmu_shell_we.domain.mission.controller;
 import com.github.kmu_shell_we.domain.mission.dto.request.UpsertMissionRequest;
 import com.github.kmu_shell_we.domain.mission.dto.response.MissionListResponse;
 import com.github.kmu_shell_we.domain.mission.dto.response.MissionResponse;
+import com.github.kmu_shell_we.domain.mission.entity.Mission;
 import com.github.kmu_shell_we.domain.mission.service.AdminMissionService;
 import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.AdminGuard;
@@ -14,13 +15,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
 @AdminGuard
 @RestController
 @RequestMapping("/admin/missions")
 @RequiredArgsConstructor
-@Tag(name = "[관지라] 글로벌 미션")
+@Tag(name = "[관리자] 글로벌 미션")
 public class AdminMissionController {
 
     private final AdminMissionService adminMissionService;
@@ -32,11 +31,11 @@ public class AdminMissionController {
         return ApiResponse.ok(adminMissionService.getMissions());
     }
 
-    @GetMapping("/{missionId}")
+    @GetMapping("/{mission}")
     @Operation(summary = "미션 상세 조회")
-    public ApiResponse<MissionResponse> getMissionBySeasonId(@Parameter(description = "미션 ID") @PathVariable UUID missionId) {
+    public ApiResponse<MissionResponse> getMissionBySeasonId(@Parameter(description = "미션 ID") @PathVariable Mission mission) {
 
-        return ApiResponse.ok(adminMissionService.getMission(missionId));
+        return ApiResponse.ok(adminMissionService.getMission(mission));
     }
 
     @PostMapping
@@ -46,21 +45,21 @@ public class AdminMissionController {
         return ApiResponse.ok(adminMissionService.createMission(request));
     }
 
-    @PutMapping("/{missionId}")
+    @PutMapping("/{mission}")
     @Operation(summary = "미션 수정")
     public ApiResponse<MissionResponse> updateMission(
-            @Parameter(description = "미션 ID") @PathVariable UUID missionId,
+            @Parameter(description = "미션 ID") @PathVariable Mission mission,
             @RequestBody @Valid UpsertMissionRequest request
     ) {
 
-        return ApiResponse.ok(adminMissionService.updateMission(missionId, request));
+        return ApiResponse.ok(adminMissionService.updateMission(mission, request));
     }
 
-    @DeleteMapping("/{missionId}")
+    @DeleteMapping("/{mission}")
     @Operation(summary = "미션 삭제")
-    public ApiResponse<Void> deleteMission(@Parameter(description = "미션 ID") @PathVariable UUID missionId) {
+    public ApiResponse<Void> deleteMission(@Parameter(description = "미션 ID") @PathVariable Mission mission) {
 
-        adminMissionService.deleteMission(missionId);
+        adminMissionService.deleteMission(mission);
 
         return ApiResponse.ok();
     }

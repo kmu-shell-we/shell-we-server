@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, UUID> {
 
-    void deleteByUser(User user);
-
     List<Schedule> findAllByUser(User user);
+
+    void deleteByUser(User user);
 }
