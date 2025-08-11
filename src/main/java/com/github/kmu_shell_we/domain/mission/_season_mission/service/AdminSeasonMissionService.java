@@ -6,17 +6,12 @@ import com.github.kmu_shell_we.domain.mission._season_mission.repository.SeasonM
 import com.github.kmu_shell_we.domain.mission.dto.response.MissionListResponse;
 import com.github.kmu_shell_we.domain.mission.dto.response.MissionResponse;
 import com.github.kmu_shell_we.domain.mission.entity.Mission;
-import com.github.kmu_shell_we.domain.mission.exception.MissionExceptions;
 import com.github.kmu_shell_we.domain.mission.repository.MissionRepository;
 import com.github.kmu_shell_we.domain.season.entity.Season;
-import com.github.kmu_shell_we.domain.season.exception.SeasonExceptions;
 import com.github.kmu_shell_we.domain.season.repository.SeasonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -27,24 +22,13 @@ public class AdminSeasonMissionService {
     private final SeasonMissionRepository seasonMissionRepository;
 
     @Transactional(readOnly = true)
-    public MissionListResponse getSeasonMissions(UUID seasonId) {
+    public MissionListResponse getSeasonMissions(Season season) {
 
-        Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
-
-        List<SeasonMission> seasonMissions = seasonMissionRepository.findAllBySeason(season);
-
-        return MissionListResponse.fromSeasonMission(seasonMissions);
+        return MissionListResponse.fromSeasonMission(seasonMissionRepository.findAllBySeason(season));
     }
 
     @Transactional
-    public MissionResponse createSeasonMission(UUID seasonId, UUID missionId) {
-
-        Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
-
-        Mission mission = missionRepository.findById(missionId)
-                .orElseThrow(MissionExceptions.NOT_FOUND::toException);
+    public MissionResponse createSeasonMission(Season season, Mission mission) {
 
         SeasonMission seasonMission = seasonMissionRepository.save(
                 SeasonMission.builder()
@@ -57,13 +41,7 @@ public class AdminSeasonMissionService {
     }
 
     @Transactional
-    public void deleteSeasonMission(UUID seasonId, UUID missionId) {
-
-        Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
-
-        Mission mission = missionRepository.findById(missionId)
-                .orElseThrow(MissionExceptions.NOT_FOUND::toException);
+    public void deleteSeasonMission(Season season, Mission mission) {
 
         SeasonMission seasonMission = seasonMissionRepository.findBySeasonAndMission(season, mission)
                 .orElseThrow(SeasonMissionExceptions.NOT_FOUND::toException);
