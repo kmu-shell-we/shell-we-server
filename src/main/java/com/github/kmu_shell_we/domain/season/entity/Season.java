@@ -38,8 +38,17 @@ public class Season extends BaseSchema {
     LocalDateTime endedAt;
 
     @OneToMany(mappedBy = "season", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    List<Team> teams;
+    @Builder.Default
+    List<Team> teams = List.of();
 
     @OneToMany(mappedBy = "season", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    List<SeasonMission> missions;
+    @Builder.Default
+    List<SeasonMission> missions = List.of();
+
+    public boolean isCurrentSeason() {
+
+        LocalDateTime now = LocalDateTime.now();
+
+        return now.isAfter(startedAt) && now.isBefore(endedAt);
+    }
 }

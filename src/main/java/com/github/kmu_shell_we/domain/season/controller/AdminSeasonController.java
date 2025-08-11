@@ -4,6 +4,7 @@ import com.github.kmu_shell_we.domain.season.dto.request.CreateSeasonRequest;
 import com.github.kmu_shell_we.domain.season.dto.request.UpdateSeasonRequest;
 import com.github.kmu_shell_we.domain.season.dto.response.SeasonListResponse;
 import com.github.kmu_shell_we.domain.season.dto.response.SeasonResponse;
+import com.github.kmu_shell_we.domain.season.entity.Season;
 import com.github.kmu_shell_we.domain.season.service.AdminSeasonService;
 import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.AdminGuard;
@@ -13,8 +14,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @AdminGuard
 @RestController
@@ -32,11 +31,11 @@ public class AdminSeasonController {
         return ApiResponse.ok(seasonService.getSeasons());
     }
 
-    @GetMapping("/{seasonId}")
+    @GetMapping("/{season}")
     @Operation(summary = "시즌 상세 조회")
-    public ApiResponse<SeasonResponse> getSeason(@Parameter(description = "시즌 ID") @PathVariable UUID seasonId) {
+    public ApiResponse<SeasonResponse> getSeason(@Parameter(description = "시즌 ID") @PathVariable Season season) {
 
-        return ApiResponse.ok(seasonService.getSeason(seasonId));
+        return ApiResponse.ok(SeasonResponse.from(season));
     }
 
     @PostMapping
@@ -46,21 +45,21 @@ public class AdminSeasonController {
         return ApiResponse.ok(seasonService.createSeason(request));
     }
 
-    @PutMapping("/{seasonId}")
+    @PutMapping("/{season}")
     @Operation(summary = "시즌 수정")
     public ApiResponse<SeasonResponse> updateSeason(
-            @Parameter(description = "시즌 ID") @PathVariable UUID seasonId,
+            @Parameter(description = "시즌 ID") @PathVariable Season season,
             @RequestBody @Valid UpdateSeasonRequest request
     ) {
 
-        return ApiResponse.ok(seasonService.updateSeason(seasonId, request));
+        return ApiResponse.ok(seasonService.updateSeason(season, request));
     }
 
-    @DeleteMapping("/{seasonId}")
+    @DeleteMapping("/{season}")
     @Operation(summary = "시즌 삭제")
-    public ApiResponse<Void> deleteSeason(@Parameter(description = "시즌 ID") @PathVariable UUID seasonId) {
+    public ApiResponse<Void> deleteSeason(@Parameter(description = "시즌 ID") @PathVariable Season season) {
 
-        seasonService.deleteSeason(seasonId);
+        seasonService.deleteSeason(season);
 
         return ApiResponse.ok();
     }

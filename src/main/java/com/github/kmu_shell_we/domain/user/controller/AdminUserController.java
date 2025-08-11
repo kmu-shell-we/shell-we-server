@@ -2,6 +2,7 @@ package com.github.kmu_shell_we.domain.user.controller;
 
 import com.github.kmu_shell_we.domain.user.dto.response.UserListResponse;
 import com.github.kmu_shell_we.domain.user.dto.response.UserResponse;
+import com.github.kmu_shell_we.domain.user.entity.User;
 import com.github.kmu_shell_we.domain.user.service.AdminUserService;
 import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.AdminGuard;
@@ -12,8 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.UUID;
 
 @AdminGuard
 @RestController
@@ -31,10 +30,10 @@ public class AdminUserController {
         return ApiResponse.ok(adminUserService.getUsers());
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{user}")
     @Operation(summary = "유저 상세 조회")
-    public ApiResponse<UserResponse> getUser(@PathVariable UUID userId) {
+    public ApiResponse<UserResponse> getUser(@PathVariable User user) {
 
-        return ApiResponse.ok(adminUserService.getUser(userId));
+        return ApiResponse.ok(UserResponse.from(user));
     }
 }

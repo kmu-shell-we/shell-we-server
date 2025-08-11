@@ -4,6 +4,8 @@ import com.github.kmu_shell_we.domain.mission._season_mission.entity.SeasonMissi
 import com.github.kmu_shell_we.domain.mission.constant.MissionType;
 import com.github.kmu_shell_we.domain.mission.entity.Mission;
 import com.github.kmu_shell_we.domain.season.entity.Season;
+import jakarta.annotation.Nonnull;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -12,6 +14,17 @@ import java.util.UUID;
 
 public interface SeasonMissionRepository extends JpaRepository<SeasonMission, UUID> {
 
+    @Nonnull
+    @Override
+    @EntityGraph(attributePaths = {"season", "mission"})
+    Optional<SeasonMission> findById(@Nonnull UUID id);
+
+    @Nonnull
+    @Override
+    @EntityGraph(attributePaths = {"season", "mission"})
+    List<SeasonMission> findAll();
+
+    @EntityGraph(attributePaths = {"season", "mission"})
     Optional<SeasonMission> findBySeasonAndMission(Season season, Mission mission);
 
     List<SeasonMission> findAllBySeason(Season season);
