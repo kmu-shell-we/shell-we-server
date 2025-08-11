@@ -12,15 +12,15 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 @RequiredArgsConstructor
 public class RedisConfig {
 
-//    private final RedisProperty redisProperty;
-//
-//    @Bean
-//    public RedisConnectionFactory redisConnectionFactory() {
-//
-//        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(redisProperty.getHost(), redisProperty.getPort());
-//
-//        config.setPassword(redisProperty.getPassword());
-//
-//        return new LettuceConnectionFactory(config);
-//    }
+    private final RedisProperty redisProperty;
+
+    @Bean
+    public RedisConnectionFactory redisConnectionFactory() {
+
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(redisProperty.getHost(), redisProperty.getPort());
+
+        config.setPassword(redisProperty.getPassword());
+
+        return new LettuceConnectionFactory(config);
+    }
 }
