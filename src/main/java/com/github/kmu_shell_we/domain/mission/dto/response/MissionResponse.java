@@ -26,9 +26,12 @@ public class MissionResponse {
     @Schema(description = "보상")
     Integer reward;
 
+    @Schema(description = "미션 설명")
+    String description;
+
     public static MissionResponse from(Mission mission) {
 
-        return MissionResponse.of(mission.getId(), mission.getType(), mission.getName(), mission.getReward());
+        return MissionResponse.of(mission.getId(), mission.getType(), mission.getName(), mission.getReward(), mission.getDescription());
     }
 
     public static MissionResponse from(SeasonMission seasonMission) {

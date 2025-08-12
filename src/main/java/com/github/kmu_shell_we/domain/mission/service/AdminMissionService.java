@@ -34,6 +34,8 @@ public class AdminMissionService {
                 Mission.builder()
                         .name(request.getName())
                         .reward(request.getReward())
+                        .description(request.getDescription())
+                        .type(request.getType())
                         .build()
         );
 
@@ -47,6 +49,8 @@ public class AdminMissionService {
                 mission.toBuilder()
                         .name(request.getName())
                         .reward(request.getReward())
+                        .description(request.getDescription())
+                        .type(request.getType())
                         .build()
         );
 

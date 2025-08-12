@@ -20,4 +20,8 @@ public class UpsertMissionRequest {
     @NotNull
     @Schema(description = "보상")
     Integer reward;
+
+    @NotNull
+    @Schema(description = "미션 설명")
+    String description;
 }
