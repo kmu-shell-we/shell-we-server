@@ -43,7 +43,8 @@ public class TeamMissionService {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(TeamExceptions.NOT_FOUND_TEAM::toException);
 
-        List<TeamMission> teamMissions = teamMissionRepository.findAllBySeasonAndTeam(season, team);
+        List<TeamMission> teamMissions = teamMissionRepository
+                .findAllBySeasonAndTeamAndEndedAtBefore(season, team, LocalDateTime.now());
 
         return TeamMissionListResponse.from(teamMissions);
     }
