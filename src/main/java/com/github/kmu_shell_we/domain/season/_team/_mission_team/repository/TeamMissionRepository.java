@@ -16,4 +16,6 @@ public interface TeamMissionRepository extends JpaRepository<TeamMission, UUID> 
     List<TeamMission> findAllBySeasonAndTeamAndEndedAtBefore(Season season, Team team, LocalDateTime now);
 
     Optional<TeamMission> findBySeasonAndTeamAndMission(Season season, Team team, Mission mission);
+
+    List<TeamMission> findAllBySeasonAndTeam(Season season, Team team);
 }

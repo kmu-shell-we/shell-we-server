@@ -10,5 +10,7 @@ import java.util.UUID;
 
 public interface SubmissionRepository extends JpaRepository<Submission, UUID> {
 
-    List<Submission> findAllByTeamMission(TeamMission teamMission);
+    Submission findByTeamMission(TeamMission teamMission);
+
+    List<Submission> findAllByTeamMissionIn(List<TeamMission> teamMissions);
 }
