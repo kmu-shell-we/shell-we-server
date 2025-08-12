@@ -75,7 +75,8 @@ public class TeamMissionService {
 
         LocalDateTime now = LocalDateTime.now();
 
-        Season season = seasonRepository.findCurrentSeason();
+        Season season = seasonRepository.findCurrentSeason()
+                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
         if(season == null) return;
 
         List<SeasonMission> missions = seasonMissionRepository
