@@ -35,22 +35,36 @@ public class SubmissionService {
     private final MissionRepository missionRepository;
 
     @Transactional(readOnly = true)
-    public SubmissionListResponse getSubmissions(UUID seasonId, UUID teamId, UUID missionId) {
+    public SubmissionListResponse getSubmissions(UUID seasonId, UUID teamId) {
+
+        Season season = seasonRepository.findById(seasonId)
+                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(TeamExceptions.NOT_FOUND_TEAM::toException);
+
+        List<TeamMission> teamMissions = teamMissionRepository.findAllBySeasonAndTeam(season, team);
+
+        List<Submission> submissions = submissionRepository.findAllByTeamMissionIn(teamMissions);
+
+        return SubmissionListResponse.from(submissions);
+    }
+
+    @Transactional(readOnly = true)
+    public SubmissionResponse getSubmission(UUID seasonId, UUID teamId, UUID missionId) {
 
         Season season = seasonRepository.findById(seasonId)
                 .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(TeamExceptions.NOT_FOUND_TEAM::toException);
         Mission mission = missionRepository.findById(missionId)
-                .orElseThrow(MissionExceptions.NOT_FOUND::toException);
-
+                .orElseThrow(MissionExceptions.NOT_FOUND_MISSION::toException);
 
         TeamMission teamMission = teamMissionRepository.findBySeasonAndTeamAndMission(season, team, mission)
                 .orElseThrow(TeamMissionExceptions.NOT_FOUND_TEAM_MISSION::toException);
 
-        List<Submission> submissions = submissionRepository.findAllByTeamMission(teamMission);
+        Submission submission = submissionRepository.findByTeamMission(teamMission);
 
-        return SubmissionListResponse.from(submissions);
+        return SubmissionResponse.from(submission);
     }
 
     @Transactional
@@ -61,7 +75,7 @@ public class SubmissionService {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(TeamExceptions.NOT_FOUND_TEAM::toException);
         Mission mission = missionRepository.findById(missionId)
-                .orElseThrow(MissionExceptions.NOT_FOUND::toException);
+                .orElseThrow(MissionExceptions.NOT_FOUND_MISSION::toException);
 
         TeamMission teamMission = teamMissionRepository.findBySeasonAndTeamAndMission(season, team, mission)
                 .orElseThrow(TeamMissionExceptions.NOT_FOUND_TEAM_MISSION::toException);
