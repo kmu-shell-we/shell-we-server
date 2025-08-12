@@ -37,6 +37,6 @@ public class TeamMission extends BaseSchema {
     @NotNull
     LocalDateTime endedAt;
 
-    @OneToMany(mappedBy = "teamMission", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    List<Submission> submissions;
+    @OneToOne(fetch = FetchType.LAZY)
+    Submission submissions;
 }

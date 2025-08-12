@@ -15,7 +15,7 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Submission extends BaseSchema {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_team_id", nullable = false)
     TeamMission teamMission;
 
