@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor(staticName = "of")
-@Schema(description = "제출 응답")
+@Schema(description = "팀 미션 제출 응답")
 public class SubmissionResponse {
 
     @Schema(description = "팀 미션")
