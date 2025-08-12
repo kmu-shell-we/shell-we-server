@@ -18,25 +18,35 @@ import java.util.UUID;
 
 @MemberGuard
 @RestController
-@RequestMapping("/seasons/{seasonId}/teams/{teamId}/missions/{missionId}/submissions")
+@RequestMapping("/seasons/{seasonId}/teams/{teamId}")
 @RequiredArgsConstructor
 @Tag(name = "팀 미션 제출")
 public class SubmissionController {
 
     private final SubmissionService submissionService;
 
-    @GetMapping
+    @GetMapping("/submissions")
     @Operation(summary = "팀 미션 제출 목록 조회")
     public ApiResponse<SubmissionListResponse> getSubmissions(
+            @Parameter(description = "시즌 ID") @PathVariable UUID seasonId,
+            @Parameter(description = "팀 ID") @PathVariable UUID teamId
+    ) {
+
+        return ApiResponse.ok(submissionService.getSubmissions(seasonId, teamId));
+    }
+
+    @GetMapping("/missions/{missionId}/submissions")
+    @Operation(summary = "팀 미션 제출 조회")
+    public ApiResponse<SubmissionResponse> getSubmission(
             @Parameter(description = "시즌 ID") @PathVariable UUID seasonId,
             @Parameter(description = "팀 ID") @PathVariable UUID teamId,
             @Parameter(description = "미션 ID") @PathVariable UUID missionId
     ) {
 
-        return ApiResponse.ok(submissionService.getSubmissions(seasonId, teamId, missionId));
+        return ApiResponse.ok(submissionService.getSubmission(seasonId, teamId, missionId));
     }
 
-    @PostMapping
+    @PostMapping("/missions/{missionId}/submissions")
     @Operation(summary = "팀 미션 제출")
     public ApiResponse<SubmissionResponse> submitMission(
             @Parameter(description = "시즌 ID") @PathVariable UUID seasonId,
