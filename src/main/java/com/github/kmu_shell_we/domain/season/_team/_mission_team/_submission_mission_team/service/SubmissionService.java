@@ -1,8 +1,6 @@
 package com.github.kmu_shell_we.domain.season._team._mission_team._submission_mission_team.service;
 
 import com.github.kmu_shell_we.domain.mission.entity.Mission;
-import com.github.kmu_shell_we.domain.mission.exception.MissionExceptions;
-import com.github.kmu_shell_we.domain.mission.repository.MissionRepository;
 import com.github.kmu_shell_we.domain.season._team._mission_team._submission_mission_team.dto.request.CreateSubmissionRequest;
 import com.github.kmu_shell_we.domain.season._team._mission_team._submission_mission_team.dto.response.SubmissionListResponse;
 import com.github.kmu_shell_we.domain.season._team._mission_team._submission_mission_team.dto.response.SubmissionResponse;
@@ -12,17 +10,12 @@ import com.github.kmu_shell_we.domain.season._team._mission_team.entity.TeamMiss
 import com.github.kmu_shell_we.domain.season._team._mission_team.exceptions.TeamMissionExceptions;
 import com.github.kmu_shell_we.domain.season._team._mission_team.repository.TeamMissionRepository;
 import com.github.kmu_shell_we.domain.season._team.entity.Team;
-import com.github.kmu_shell_we.domain.season._team.exception.TeamExceptions;
-import com.github.kmu_shell_we.domain.season._team.repository.TeamRepository;
 import com.github.kmu_shell_we.domain.season.entity.Season;
-import com.github.kmu_shell_we.domain.season.exception.SeasonExceptions;
-import com.github.kmu_shell_we.domain.season.repository.SeasonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -30,17 +23,9 @@ public class SubmissionService {
 
     private final TeamMissionRepository teamMissionRepository;
     private final SubmissionRepository submissionRepository;
-    private final SeasonRepository seasonRepository;
-    private final TeamRepository teamRepository;
-    private final MissionRepository missionRepository;
 
     @Transactional(readOnly = true)
-    public SubmissionListResponse getSubmissions(UUID seasonId, UUID teamId) {
-
-        Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
-        Team team = teamRepository.findById(teamId)
-                .orElseThrow(TeamExceptions.NOT_FOUND_TEAM::toException);
+    public SubmissionListResponse getSubmissions(Season season, Team team) {
 
         List<TeamMission> teamMissions = teamMissionRepository.findAllBySeasonAndTeam(season, team);
 
@@ -50,14 +35,7 @@ public class SubmissionService {
     }
 
     @Transactional(readOnly = true)
-    public SubmissionResponse getSubmission(UUID seasonId, UUID teamId, UUID missionId) {
-
-        Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
-        Team team = teamRepository.findById(teamId)
-                .orElseThrow(TeamExceptions.NOT_FOUND_TEAM::toException);
-        Mission mission = missionRepository.findById(missionId)
-                .orElseThrow(MissionExceptions.NOT_FOUND_MISSION::toException);
+    public SubmissionResponse getSubmission(Season season, Team team, Mission mission) {
 
         TeamMission teamMission = teamMissionRepository.findBySeasonAndTeamAndMission(season, team, mission)
                 .orElseThrow(TeamMissionExceptions.NOT_FOUND_TEAM_MISSION::toException);
@@ -68,14 +46,7 @@ public class SubmissionService {
     }
 
     @Transactional
-    public SubmissionResponse submitSubmission(UUID seasonId, UUID teamId, UUID missionId, CreateSubmissionRequest request) {
-
-        Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(SeasonExceptions.NOT_FOUND_SEASON::toException);
-        Team team = teamRepository.findById(teamId)
-                .orElseThrow(TeamExceptions.NOT_FOUND_TEAM::toException);
-        Mission mission = missionRepository.findById(missionId)
-                .orElseThrow(MissionExceptions.NOT_FOUND_MISSION::toException);
+    public SubmissionResponse submitSubmission(Season season, Team team, Mission mission, CreateSubmissionRequest request) {
 
         TeamMission teamMission = teamMissionRepository.findBySeasonAndTeamAndMission(season, team, mission)
                 .orElseThrow(TeamMissionExceptions.NOT_FOUND_TEAM_MISSION::toException);

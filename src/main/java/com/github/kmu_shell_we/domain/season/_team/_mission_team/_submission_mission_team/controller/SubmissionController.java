@@ -1,10 +1,13 @@
 package com.github.kmu_shell_we.domain.season._team._mission_team._submission_mission_team.controller;
 
 
+import com.github.kmu_shell_we.domain.mission.entity.Mission;
 import com.github.kmu_shell_we.domain.season._team._mission_team._submission_mission_team.dto.request.CreateSubmissionRequest;
 import com.github.kmu_shell_we.domain.season._team._mission_team._submission_mission_team.dto.response.SubmissionListResponse;
 import com.github.kmu_shell_we.domain.season._team._mission_team._submission_mission_team.dto.response.SubmissionResponse;
 import com.github.kmu_shell_we.domain.season._team._mission_team._submission_mission_team.service.SubmissionService;
+import com.github.kmu_shell_we.domain.season._team.entity.Team;
+import com.github.kmu_shell_we.domain.season.entity.Season;
 import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.MemberGuard;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,11 +17,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
 @MemberGuard
 @RestController
-@RequestMapping("/seasons/{seasonId}/teams/{teamId}")
+@RequestMapping("/seasons/{season}/teams/{team}")
 @RequiredArgsConstructor
 @Tag(name = "팀 미션 제출")
 public class SubmissionController {
@@ -28,33 +29,33 @@ public class SubmissionController {
     @GetMapping("/submissions")
     @Operation(summary = "팀 미션 제출 목록 조회")
     public ApiResponse<SubmissionListResponse> getSubmissions(
-            @Parameter(description = "시즌 ID") @PathVariable UUID seasonId,
-            @Parameter(description = "팀 ID") @PathVariable UUID teamId
+            @Parameter(description = "시즌 ID") @PathVariable Season season,
+            @Parameter(description = "팀 ID") @PathVariable Team team
     ) {
 
-        return ApiResponse.ok(submissionService.getSubmissions(seasonId, teamId));
+        return ApiResponse.ok(submissionService.getSubmissions(season, team));
     }
 
-    @GetMapping("/missions/{missionId}/submissions")
+    @GetMapping("/missions/{mission}/submissions")
     @Operation(summary = "팀 미션 제출 조회")
     public ApiResponse<SubmissionResponse> getSubmission(
-            @Parameter(description = "시즌 ID") @PathVariable UUID seasonId,
-            @Parameter(description = "팀 ID") @PathVariable UUID teamId,
-            @Parameter(description = "미션 ID") @PathVariable UUID missionId
+            @Parameter(description = "시즌 ID") @PathVariable Season season,
+            @Parameter(description = "팀 ID") @PathVariable Team team,
+            @Parameter(description = "미션 ID")@PathVariable Mission mission
     ) {
 
-        return ApiResponse.ok(submissionService.getSubmission(seasonId, teamId, missionId));
+        return ApiResponse.ok(submissionService.getSubmission(season, team, mission));
     }
 
-    @PostMapping("/missions/{missionId}/submissions")
+    @PostMapping("/missions/{mission}/submissions")
     @Operation(summary = "팀 미션 제출")
     public ApiResponse<SubmissionResponse> submitMission(
-            @Parameter(description = "시즌 ID") @PathVariable UUID seasonId,
-            @Parameter(description = "팀 ID") @PathVariable UUID teamId,
-            @Parameter(description = "미션 ID") @PathVariable UUID missionId,
+            @Parameter(description = "시즌 ID") @PathVariable Season season,
+            @Parameter(description = "팀 ID") @PathVariable Team team,
+            @Parameter(description = "미션 ID") @PathVariable Mission mission,
             @RequestBody @Valid CreateSubmissionRequest request
     ) {
 
-        return ApiResponse.ok(submissionService.submitSubmission(seasonId, teamId, missionId, request));
+        return ApiResponse.ok(submissionService.submitSubmission(season, team, mission, request));
     }
 }
