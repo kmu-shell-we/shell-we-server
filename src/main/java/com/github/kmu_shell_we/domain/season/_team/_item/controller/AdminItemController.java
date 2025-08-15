@@ -8,6 +8,7 @@ import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.AdminGuard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,8 @@ public class AdminItemController {
     @GetMapping
     @Operation(summary = "특정 팀 인벤토리 조회")
     public ApiResponse<ItemListResponse> getItem(
-            @Parameter(description = "시즌 ID") @PathVariable Season season, @Parameter(description = "팀 ID") @PathVariable Team team
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
+            @Parameter(description = "팀 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Team team
     ) {
 
         return ApiResponse.ok(adminItemService.getItem(season, team));
