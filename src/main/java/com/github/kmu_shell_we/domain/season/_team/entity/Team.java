@@ -37,6 +37,7 @@ public class Team extends BaseSchema {
     @Builder.Default
     List<UserTeam> userTeams = List.of();
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
     List<Item> items = List.of();
 }
