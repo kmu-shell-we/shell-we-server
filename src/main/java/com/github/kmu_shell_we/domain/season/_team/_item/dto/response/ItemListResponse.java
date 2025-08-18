@@ -9,11 +9,10 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor(staticName = "of")
-@Schema(description = "아이템 목록 응답")
+@Schema(name = "아이템 목록 응답 DTO")
 public class ItemListResponse {
 
-    @Schema(description = "아이템 목록")
-    private final List<ItemResponse> items;
+    List<ItemResponse> items;
 
     public static ItemListResponse from(List<Item> items) {
 
