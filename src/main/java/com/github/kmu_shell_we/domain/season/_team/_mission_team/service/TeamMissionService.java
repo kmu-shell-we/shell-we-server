@@ -13,6 +13,7 @@ import com.github.kmu_shell_we.domain.season.exception.SeasonExceptions;
 import com.github.kmu_shell_we.domain.season.repository.SeasonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,12 +34,11 @@ public class TeamMissionService {
     private final SeasonMissionRepository seasonMissionRepository;
 
     @Transactional(readOnly = true)
+    @PreAuthorize("#season.isCurrentSeason() and #season == #team.season")
     public TeamMissionListResponse getTeamMissions(Season season, Team team) {
 
-        List<TeamMission> teamMissions = teamMissionRepository
-                .findAllBySeasonAndTeamAndEndedAtBefore(season, team, LocalDateTime.now());
-
-        return TeamMissionListResponse.from(teamMissions);
+        return TeamMissionListResponse.from(teamMissionRepository
+                .findAllByTeamAndEndedAtBefore(team, LocalDateTime.now()));
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
@@ -85,7 +85,6 @@ public class TeamMissionService {
             SeasonMission randomMission = missions.get(random.nextInt(missions.size()));
             teamMissionRepository.save(
                     TeamMission.builder()
-                            .season(season)
                             .mission(randomMission.getMission())
                             .team(team)
                             .endedAt(endedAt)

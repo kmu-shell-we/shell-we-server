@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum SeasonMissionExceptions implements ApiExceptionCode {
 
-    NOT_FOUND("SEASON_MISSION_001", "시즌 미션을 찾을 수 없습니다."),
+    NOT_FOUND_SEASON_MISSION("SEASON_MISSION_001", "시즌 미션을 찾을 수 없습니다."),
     ;
 
     private final String code;

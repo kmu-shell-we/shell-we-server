@@ -34,10 +34,10 @@ public class ItemController {
 
     @PostMapping("/draw")
     @Operation(summary = "아이템 뽑기")
-    public ApiResponse<ItemResponse> drawItem(
+    public ApiResponse<? extends ItemResponse> drawItem(
             @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
             @Parameter(description = "팀 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Team team
     ) {
-        return ApiResponse.ok(itemService.drawItem(team));
+        return ApiResponse.ok(itemService.drawItem(season, team));
     }
 }

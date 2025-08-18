@@ -16,6 +16,6 @@ public class ItemListResponse {
 
     public static ItemListResponse from(List<Item> items) {
 
-        return ItemListResponse.of(items.stream().map(ItemResponse::from).toList());
+        return ItemListResponse.of(items.stream().map(ItemResponse::from.toList());
     }
 }

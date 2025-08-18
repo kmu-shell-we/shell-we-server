@@ -7,6 +7,7 @@ import com.github.kmu_shell_we.domain.season.entity.Season;
 import jakarta.annotation.Nonnull;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,4 +31,7 @@ public interface SeasonMissionRepository extends JpaRepository<SeasonMission, UU
     List<SeasonMission> findAllBySeason(Season season);
 
     List<SeasonMission> findAllBySeasonAndMissionType(Season season, MissionType missionType);
+
+    @Query(value = "SELECT sm FROM SeasonMission sm WHERE sm.season = :season ORDER BY RAND() LIMIT 1")
+    Optional<SeasonMission> findRandomOneBySeason(Season season);
 }
