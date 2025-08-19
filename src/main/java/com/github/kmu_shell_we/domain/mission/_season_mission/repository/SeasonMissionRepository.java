@@ -1,6 +1,7 @@
 package com.github.kmu_shell_we.domain.mission._season_mission.repository;
 
 import com.github.kmu_shell_we.domain.mission._season_mission.entity.SeasonMission;
+import com.github.kmu_shell_we.domain.mission.constant.MissionType;
 import com.github.kmu_shell_we.domain.mission.entity.Mission;
 import com.github.kmu_shell_we.domain.season.entity.Season;
 import jakarta.annotation.Nonnull;
@@ -27,4 +28,6 @@ public interface SeasonMissionRepository extends JpaRepository<SeasonMission, UU
     Optional<SeasonMission> findBySeasonAndMission(Season season, Mission mission);
 
     List<SeasonMission> findAllBySeason(Season season);
+
+    List<SeasonMission> findAllBySeasonAndMissionType(Season season, MissionType missionType);
 }
