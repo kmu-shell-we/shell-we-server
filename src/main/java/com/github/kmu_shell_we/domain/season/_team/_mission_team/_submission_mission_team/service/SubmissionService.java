@@ -12,6 +12,7 @@ import com.github.kmu_shell_we.domain.season._team._mission_team.repository.Team
 import com.github.kmu_shell_we.domain.season._team.entity.Team;
 import com.github.kmu_shell_we.domain.season.entity.Season;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,9 +26,10 @@ public class SubmissionService {
     private final SubmissionRepository submissionRepository;
 
     @Transactional(readOnly = true)
+    @PreAuthorize("#season.isCurrentSeason() and #season == #team.season")
     public SubmissionListResponse getSubmissions(Season season, Team team) {
 
-        List<TeamMission> teamMissions = teamMissionRepository.findAllBySeasonAndTeam(season, team);
+        List<TeamMission> teamMissions = teamMissionRepository.findAllByTeam(team);
 
         List<Submission> submissions = submissionRepository.findAllByTeamMissionIn(teamMissions);
 
@@ -35,9 +37,10 @@ public class SubmissionService {
     }
 
     @Transactional(readOnly = true)
+    @PreAuthorize("#season.isCurrentSeason() and #season == #team.season")
     public SubmissionResponse getSubmission(Season season, Team team, Mission mission) {
 
-        TeamMission teamMission = teamMissionRepository.findBySeasonAndTeamAndMission(season, team, mission)
+        TeamMission teamMission = teamMissionRepository.findByTeamAndMission(team, mission)
                 .orElseThrow(TeamMissionExceptions.NOT_FOUND_TEAM_MISSION::toException);
 
         Submission submission = submissionRepository.findByTeamMission(teamMission);
@@ -46,9 +49,10 @@ public class SubmissionService {
     }
 
     @Transactional
+    @PreAuthorize("#season.isCurrentSeason() and #season == #team.season")
     public SubmissionResponse submitSubmission(Season season, Team team, Mission mission, CreateSubmissionRequest request) {
 
-        TeamMission teamMission = teamMissionRepository.findBySeasonAndTeamAndMission(season, team, mission)
+        TeamMission teamMission = teamMissionRepository.findByTeamAndMission(team, mission)
                 .orElseThrow(TeamMissionExceptions.NOT_FOUND_TEAM_MISSION::toException);
 
         Submission submission = submissionRepository.save(Submission

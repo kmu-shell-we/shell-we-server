@@ -10,6 +10,7 @@ import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.AdminGuard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,9 @@ public class AdminSeasonController {
 
     @GetMapping("/{season}")
     @Operation(summary = "시즌 상세 조회")
-    public ApiResponse<SeasonResponse> getSeason(@Parameter(description = "시즌 ID") @PathVariable Season season) {
+    public ApiResponse<SeasonResponse> getSeason(
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season
+    ) {
 
         return ApiResponse.ok(SeasonResponse.from(season));
     }
@@ -48,7 +51,7 @@ public class AdminSeasonController {
     @PutMapping("/{season}")
     @Operation(summary = "시즌 수정")
     public ApiResponse<SeasonResponse> updateSeason(
-            @Parameter(description = "시즌 ID") @PathVariable Season season,
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
             @RequestBody @Valid UpdateSeasonRequest request
     ) {
 
@@ -57,7 +60,9 @@ public class AdminSeasonController {
 
     @DeleteMapping("/{season}")
     @Operation(summary = "시즌 삭제")
-    public ApiResponse<Void> deleteSeason(@Parameter(description = "시즌 ID") @PathVariable Season season) {
+    public ApiResponse<Void> deleteSeason(
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season
+    ) {
 
         seasonService.deleteSeason(season);
 

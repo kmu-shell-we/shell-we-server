@@ -32,5 +32,5 @@ public class TeamMission extends BaseSchema {
     LocalDateTime endedAt;
 
     @OneToOne(fetch = FetchType.LAZY)
-    Submission submissions;
+    Submission submission;
 }

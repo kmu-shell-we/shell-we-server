@@ -22,7 +22,4 @@ public class Item extends BaseSchema {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     ItemType type;
-
-    @Column(columnDefinition = "JSON")
-    String itemData;
 }

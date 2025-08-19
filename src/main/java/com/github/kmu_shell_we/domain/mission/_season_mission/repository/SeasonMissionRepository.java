@@ -32,6 +32,6 @@ public interface SeasonMissionRepository extends JpaRepository<SeasonMission, UU
 
     List<SeasonMission> findAllBySeasonAndMissionType(Season season, MissionType missionType);
 
-    @Query(value = "SELECT sm FROM SeasonMission sm WHERE sm.season = :season ORDER BY RAND() LIMIT 1")
-    Optional<SeasonMission> findRandomOneBySeason(Season season);
+    @Query("SELECT sm FROM SeasonMission sm WHERE sm.season = :season and sm.mission.type = 'DAILY' ORDER BY RAND() LIMIT 1")
+    Optional<SeasonMission> findRandomDailyMissionBySeason(Season season);
 }

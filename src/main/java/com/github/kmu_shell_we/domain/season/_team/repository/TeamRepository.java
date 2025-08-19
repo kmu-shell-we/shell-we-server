@@ -17,6 +17,6 @@ public interface TeamRepository extends JpaRepository<Team, UUID> {
     @Query("SELECT t FROM Team t JOIN UserTeam ut ON t = ut.team WHERE ut.user = :user AND t.season = :season")
     Optional<Team> findByUserAndSeason(User user, Season season);
 
-    @Query(value = "SELECT t FROM Team t WHERE t != :team ORDER BY RAND() LIMIT 1")
-    Team findRandomTeamExcept(Team team);
+    @Query("SELECT t FROM Team t WHERE t != :team ORDER BY RAND() LIMIT 1")
+    Optional<Team> findRandomTeamExcept(Team team);
 }

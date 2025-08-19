@@ -10,6 +10,7 @@ import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.AdminGuard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,9 @@ public class AdminMissionController {
 
     @GetMapping("/{mission}")
     @Operation(summary = "미션 상세 조회")
-    public ApiResponse<MissionResponse> getMissionBySeasonId(@Parameter(description = "미션 ID") @PathVariable Mission mission) {
+    public ApiResponse<MissionResponse> getMissionBySeasonId(
+            @Parameter(description = "미션 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Mission mission
+    ) {
 
         return ApiResponse.ok(adminMissionService.getMission(mission));
     }
@@ -48,7 +51,7 @@ public class AdminMissionController {
     @PutMapping("/{mission}")
     @Operation(summary = "미션 수정")
     public ApiResponse<MissionResponse> updateMission(
-            @Parameter(description = "미션 ID") @PathVariable Mission mission,
+            @Parameter(description = "미션 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Mission mission,
             @RequestBody @Valid UpsertMissionRequest request
     ) {
 
@@ -57,7 +60,9 @@ public class AdminMissionController {
 
     @DeleteMapping("/{mission}")
     @Operation(summary = "미션 삭제")
-    public ApiResponse<Void> deleteMission(@Parameter(description = "미션 ID") @PathVariable Mission mission) {
+    public ApiResponse<Void> deleteMission(
+            @Parameter(description = "미션 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Mission mission
+    ) {
 
         adminMissionService.deleteMission(mission);
 
