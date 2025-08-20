@@ -35,6 +35,8 @@ public class AdminMissionService {
                         .type(request.getType())
                         .name(request.getName())
                         .reward(request.getReward())
+                        .description(request.getDescription())
+                        .type(request.getType())
                         .build()
         );
 
@@ -47,6 +49,7 @@ public class AdminMissionService {
         mission.setType(request.getType());
         mission.setName(request.getName());
         mission.setReward(request.getReward());
+
 
         return MissionResponse.from(mission);
     }

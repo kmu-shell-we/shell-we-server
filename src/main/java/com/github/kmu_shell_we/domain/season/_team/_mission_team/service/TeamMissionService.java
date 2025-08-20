@@ -44,7 +44,6 @@ public class TeamMissionService {
                 .findAllByTeamAndEndedAtGreaterThanEqual(team, LocalDateTime.now()));
     }
 
-    @PostConstruct
     @Scheduled(cron = "0 0 0 * * ?")
     @Transactional
     public void assignDailyMission() {
@@ -53,7 +52,6 @@ public class TeamMissionService {
                 now -> now.toLocalDate().plusDays(1).atStartOfDay());
     }
 
-    @PostConstruct
     @Scheduled(cron = "0 0 0 ? * MON")
     @Transactional
     public void assignWeeklyMission() {
@@ -80,6 +78,7 @@ public class TeamMissionService {
         if (missions.isEmpty()) return;
 
         List<Team> teams = teamRepository.findAllBySeason(season);
+        if (teams.isEmpty()) return;
 
         LocalDateTime endedAt = endCalculator.apply(now);
         ThreadLocalRandom random = ThreadLocalRandom.current();

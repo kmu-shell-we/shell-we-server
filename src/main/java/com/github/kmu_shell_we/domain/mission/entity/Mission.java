@@ -30,6 +30,10 @@ public class Mission extends BaseSchema {
     @NotNull
     Integer reward;
 
+    @Column(nullable = false)
+    @NotNull
+    String description;
+
     @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     List<SeasonMission> seasonMissions = List.of();
