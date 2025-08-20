@@ -1,6 +1,6 @@
 package com.github.kmu_shell_we.domain.season._team.entity;
 
-import com.github.kmu_shell_we.domain.season._team._mission_team.entity.TeamMission;
+import com.github.kmu_shell_we.domain.season._team._item.entity.Item;
 import com.github.kmu_shell_we.domain.season._team._user_team.entity.UserTeam;
 import com.github.kmu_shell_we.domain.season.entity.Season;
 import com.github.kmu_shell_we.global.infra.mysql.BaseSchema;
@@ -38,5 +38,6 @@ public class Team extends BaseSchema {
     List<UserTeam> userTeams = List.of();
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    List<TeamMission> teamMissions;
+    @Builder.Default
+    List<Item> items = List.of();
 }

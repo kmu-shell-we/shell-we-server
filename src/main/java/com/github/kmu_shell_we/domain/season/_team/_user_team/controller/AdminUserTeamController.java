@@ -8,6 +8,7 @@ import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.AdminGuard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +25,9 @@ public class AdminUserTeamController {
     @PostMapping("/{user}")
     @Operation(summary = "팀에 유저 추가")
     public ApiResponse<Void> addMember(
-            @Parameter(description = "시즌 ID") @PathVariable Season season,
-            @Parameter(description = "팀 ID") @PathVariable Team team,
-            @Parameter(description = "유저 ID") @PathVariable User user
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
+            @Parameter(description = "팀 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Team team,
+            @Parameter(description = "유저 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable User user
     ) {
 
         adminUserTeamService.addMember(season, team, user);
@@ -37,9 +38,9 @@ public class AdminUserTeamController {
     @DeleteMapping("/{user}")
     @Operation(summary = "팀에 유저 삭제")
     public ApiResponse<Void> deleteMember(
-            @Parameter(description = "시즌 ID") @PathVariable Season season,
-            @Parameter(description = "팀 ID") @PathVariable Team team,
-            @Parameter(description = "유저 ID") @PathVariable User user
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
+            @Parameter(description = "팀 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Team team,
+            @Parameter(description = "유저 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable User user
     ) {
 
         adminUserTeamService.deleteMember(season, team, user);

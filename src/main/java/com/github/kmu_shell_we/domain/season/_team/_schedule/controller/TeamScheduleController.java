@@ -9,6 +9,7 @@ import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.MemberGuard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +28,8 @@ public class TeamScheduleController {
     @GetMapping
     @Operation(description = "팀 시간표 조회")
     public ApiResponse<TeamScheduleResponse> getTeamSchedule(
-            @Parameter(description = "시즌 ID") @PathVariable Season season,
-            @Parameter(description = "팀 ID")  @PathVariable Team team,
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
+            @Parameter(description = "팀 ID", schema = @Schema(type = "string", format = "uuid"))  @PathVariable Team team,
             @RequestParam List<User> users
     ) {
 

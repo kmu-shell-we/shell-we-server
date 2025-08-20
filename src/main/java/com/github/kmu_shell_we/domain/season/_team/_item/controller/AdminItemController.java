@@ -1,12 +1,11 @@
-package com.github.kmu_shell_we.domain.season._team._mission_team.controller;
+package com.github.kmu_shell_we.domain.season._team._item.controller;
 
-
-import com.github.kmu_shell_we.domain.season._team._mission_team.dto.response.TeamMissionListResponse;
-import com.github.kmu_shell_we.domain.season._team._mission_team.service.TeamMissionService;
+import com.github.kmu_shell_we.domain.season._team._item.dto.response.ItemListResponse;
+import com.github.kmu_shell_we.domain.season._team._item.service.AdminItemService;
 import com.github.kmu_shell_we.domain.season._team.entity.Team;
 import com.github.kmu_shell_we.domain.season.entity.Season;
 import com.github.kmu_shell_we.global.response.ApiResponse;
-import com.github.kmu_shell_we.global.security.guard.MemberGuard;
+import com.github.kmu_shell_we.global.security.guard.AdminGuard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,22 +16,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@MemberGuard
+@AdminGuard
 @RestController
-@RequestMapping("/seasons/{season}/teams/{team}/missions")
+@RequestMapping("/admin/seasons/{season}/teams/{team}/items")
 @RequiredArgsConstructor
-@Tag(name = "팀 미션")
-public class TeamMissionController {
+@Tag(name = "[관리자] 팀 아이템")
+public class AdminItemController {
 
-    private final TeamMissionService teamMissionService;
+    private final AdminItemService adminItemService;
 
     @GetMapping
-    @Operation(summary = "팀 미션 목록 조회")
-    public ApiResponse<TeamMissionListResponse> getTeamMissions(
+    @Operation(summary = "특정 팀 인벤토리 조회")
+    public ApiResponse<ItemListResponse> getItem(
             @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
             @Parameter(description = "팀 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Team team
     ) {
 
-        return ApiResponse.ok(teamMissionService.getTeamMissions(season, team));
+        return ApiResponse.ok(adminItemService.getItem(season, team));
     }
 }

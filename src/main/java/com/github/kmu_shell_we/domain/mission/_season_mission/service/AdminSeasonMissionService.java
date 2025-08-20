@@ -6,9 +6,7 @@ import com.github.kmu_shell_we.domain.mission._season_mission.repository.SeasonM
 import com.github.kmu_shell_we.domain.mission.dto.response.MissionListResponse;
 import com.github.kmu_shell_we.domain.mission.dto.response.MissionResponse;
 import com.github.kmu_shell_we.domain.mission.entity.Mission;
-import com.github.kmu_shell_we.domain.mission.repository.MissionRepository;
 import com.github.kmu_shell_we.domain.season.entity.Season;
-import com.github.kmu_shell_we.domain.season.repository.SeasonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AdminSeasonMissionService {
 
-    private final MissionRepository missionRepository;
-    private final SeasonRepository seasonRepository;
     private final SeasonMissionRepository seasonMissionRepository;
 
     @Transactional(readOnly = true)
@@ -29,6 +25,9 @@ public class AdminSeasonMissionService {
 
     @Transactional
     public MissionResponse createSeasonMission(Season season, Mission mission) {
+
+        seasonMissionRepository.findBySeasonAndMission(season, mission)
+                .ifPresent(seasonMission -> {throw SeasonMissionExceptions.ALREADY_ADDED_SEASON_MISSION.toException();});
 
         SeasonMission seasonMission = seasonMissionRepository.save(
                 SeasonMission.builder()
@@ -44,7 +43,7 @@ public class AdminSeasonMissionService {
     public void deleteSeasonMission(Season season, Mission mission) {
 
         SeasonMission seasonMission = seasonMissionRepository.findBySeasonAndMission(season, mission)
-                .orElseThrow(SeasonMissionExceptions.NOT_FOUND::toException);
+                .orElseThrow(SeasonMissionExceptions.NOT_FOUND_SEASON_MISSION::toException);
 
         seasonMissionRepository.delete(seasonMission);
     }

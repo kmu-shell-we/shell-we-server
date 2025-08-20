@@ -9,6 +9,7 @@ import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.AdminGuard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class AdminSeasonMissionController {
     @GetMapping
     @Operation(summary = "특정 시즌 전체 미션 조회")
     public ApiResponse<MissionListResponse> getSeasonMissions(
-            @Parameter(description = "시즌 ID") @PathVariable Season season
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season
     ) {
 
         return ApiResponse.ok(adminSeasonMissionService.getSeasonMissions(season));
@@ -34,8 +35,8 @@ public class AdminSeasonMissionController {
     @PostMapping("/{mission}")
     @Operation(summary = "시즌 미션 생성")
     public ApiResponse<MissionResponse> createSeasonMission(
-            @Parameter(description = "시즌 ID") @PathVariable Season season,
-            @Parameter(description = "미션 ID") @PathVariable Mission mission
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
+            @Parameter(description = "미션 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Mission mission
     ) {
 
         return ApiResponse.ok(adminSeasonMissionService.createSeasonMission(season, mission));
@@ -44,8 +45,8 @@ public class AdminSeasonMissionController {
     @DeleteMapping("/{mission}")
     @Operation(summary = "시즌 미션 삭제")
     public ApiResponse<Void> deleteSeasonMission(
-            @Parameter(description = "시즌 ID") @PathVariable Season season,
-            @Parameter(description = "미션 ID") @PathVariable Mission mission
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
+            @Parameter(description = "미션 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Mission mission
     ) {
 
         adminSeasonMissionService.deleteSeasonMission(season, mission);

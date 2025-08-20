@@ -11,6 +11,7 @@ import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.MemberGuard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,7 +31,9 @@ public class TeamController {
 
     @GetMapping
     @Operation(summary = "전체 팀 목록 조회")
-    public ApiResponse<TeamListResponse> getTeams(@Parameter(description = "시즌 ID") @PathVariable Season season) {
+    public ApiResponse<TeamListResponse> getTeams(
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season
+    ) {
 
         return ApiResponse.ok(teamService.getTeams(season));
     }
@@ -39,7 +42,7 @@ public class TeamController {
     @Operation(summary = "내 팀 조회")
     public ApiResponse<GetTeamResponse> getMyTeam(
             @AuthenticationPrincipal User user,
-            @Parameter(description = "시즌 ID") @PathVariable Season season
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season
     ) {
         return ApiResponse.ok(teamService.getMyTeam(user, season));
     }
@@ -47,8 +50,8 @@ public class TeamController {
     @GetMapping("/{team}")
     @Operation(summary = "다른 팀 조회")
     public ApiResponse<GetOtherTeamResponse> getOtherTeam(
-            @Parameter(description = "시즌 ID") @PathVariable Season season,
-            @Parameter(description = "팀 ID") @PathVariable Team team
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
+            @Parameter(description = "팀 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Team team
     ) {
 
         return ApiResponse.ok(teamService.getOtherTeam(season, team));

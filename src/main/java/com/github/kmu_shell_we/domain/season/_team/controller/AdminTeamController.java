@@ -10,6 +10,7 @@ import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.AdminGuard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,9 @@ public class AdminTeamController {
 
     @GetMapping
     @Operation(summary = "전체 팀 목록 조회")
-    public ApiResponse<TeamListResponse> getTeams(@Parameter(description = "시즌 ID") @PathVariable Season season) {
+    public ApiResponse<TeamListResponse> getTeams(
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season
+    ) {
 
         return ApiResponse.ok(adminTeamService.getTeams(season));
     }
@@ -33,8 +36,8 @@ public class AdminTeamController {
     @GetMapping("/{team}")
     @Operation(summary = "팀 상세 조회")
     public ApiResponse<GetTeamResponse> getTeam(
-            @Parameter(description = "시즌 ID") @PathVariable Season season,
-            @Parameter(description = "팀 ID") @PathVariable Team team
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
+            @Parameter(description = "팀 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Team team
     ) {
 
         return ApiResponse.ok(adminTeamService.getTeam(season, team));
@@ -42,7 +45,9 @@ public class AdminTeamController {
 
     @PostMapping
     @Operation(summary = "팀 생성")
-    public ApiResponse<TeamResponse> createTeam(@Parameter(description = "시즌 ID") @PathVariable Season season) {
+    public ApiResponse<TeamResponse> createTeam(
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season
+    ) {
 
         return ApiResponse.ok(adminTeamService.createTeam(season));
     }
@@ -50,8 +55,8 @@ public class AdminTeamController {
     @DeleteMapping("/{team}")
     @Operation(summary = "팀 삭제")
     public ApiResponse<Void> deleteTeam(
-            @Parameter(description = "시즌 ID") @PathVariable Season season,
-            @Parameter(description = "팀 ID") @PathVariable Team team
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
+            @Parameter(description = "팀 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Team team
     ) {
 
         adminTeamService.deleteTeam(season, team);

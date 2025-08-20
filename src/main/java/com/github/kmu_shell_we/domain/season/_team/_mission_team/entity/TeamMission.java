@@ -3,14 +3,12 @@ package com.github.kmu_shell_we.domain.season._team._mission_team.entity;
 import com.github.kmu_shell_we.domain.mission.entity.Mission;
 import com.github.kmu_shell_we.domain.season._team._mission_team._submission_mission_team.entity.Submission;
 import com.github.kmu_shell_we.domain.season._team.entity.Team;
-import com.github.kmu_shell_we.domain.season.entity.Season;
 import com.github.kmu_shell_we.global.infra.mysql.BaseSchema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -20,10 +18,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class TeamMission extends BaseSchema {
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "season_id", nullable = false)
-    Season season;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id", nullable = false)
@@ -38,5 +32,5 @@ public class TeamMission extends BaseSchema {
     LocalDateTime endedAt;
 
     @OneToOne(fetch = FetchType.LAZY)
-    Submission submissions;
+    Submission submission;
 }
