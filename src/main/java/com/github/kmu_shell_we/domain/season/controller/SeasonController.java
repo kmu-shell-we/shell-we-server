@@ -8,6 +8,7 @@ import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.MemberGuard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +35,8 @@ public class SeasonController {
     @GetMapping("/{season}/ranks")
     @Operation(summary = "현재 시즌 랭크 조회")
     public ApiResponse<List<SimpleTeamResponse>> getSeasonRanks(
-            @Parameter(description = "시즌 ID") @PathVariable Season season,
-            @Parameter(description = "상위 3개만 조회할지 여부") @RequestParam(required = false, defaultValue = "false") boolean simplified
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
+            @Parameter(description = "상위 3개 조회 여부") @RequestParam(required = false, defaultValue = "false") boolean simplified
     ) {
 
         return ApiResponse.ok(seasonService.getCurrentSeasonRanks(season, simplified));
