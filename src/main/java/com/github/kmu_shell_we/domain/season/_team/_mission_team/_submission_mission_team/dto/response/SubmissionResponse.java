@@ -12,7 +12,7 @@ import lombok.Data;
 public class SubmissionResponse {
 
     @Schema(description = "팀 미션")
-    TeamMissionResponse teamMissionResponse;
+    TeamMissionResponse teamMission;
 
     @Schema(description = "팀 미션 인증 사진 URL")
     String image;
