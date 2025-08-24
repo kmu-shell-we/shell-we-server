@@ -5,6 +5,7 @@ import com.github.kmu_shell_we.domain.season._team._item.dto.response.ItemRespon
 import com.github.kmu_shell_we.domain.season._team._item.service.ItemService;
 import com.github.kmu_shell_we.domain.season._team.entity.Team;
 import com.github.kmu_shell_we.domain.season.entity.Season;
+import com.github.kmu_shell_we.domain.user.entity.User;
 import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.MemberGuard;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @MemberGuard
@@ -26,18 +28,20 @@ public class ItemController {
     @GetMapping
     @Operation(summary = "아이템 조회")
     public ApiResponse<ItemListResponse> getItems(
+            @AuthenticationPrincipal User user,
             @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
             @Parameter(description = "팀 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Team team
     ) {
-        return ApiResponse.ok(itemService.getItems(season, team));
+        return ApiResponse.ok(itemService.getItems(user, season, team));
     }
 
     @PostMapping("/draw")
     @Operation(summary = "아이템 뽑기")
     public ApiResponse<? extends ItemResponse> drawItem(
+            @AuthenticationPrincipal User user,
             @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
             @Parameter(description = "팀 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Team team
     ) {
-        return ApiResponse.ok(itemService.drawItem(season, team));
+        return ApiResponse.ok(itemService.drawItem(user, season, team));
     }
 }
