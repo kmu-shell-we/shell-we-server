@@ -40,28 +40,28 @@ public class SubmissionController {
         return ApiResponse.ok(submissionService.getSubmissions(user, season, team));
     }
 
-    @GetMapping("/team_mission/{team_mission}/submissions")
+    @GetMapping("/team_mission/{teamMission}/submissions")
     @Operation(summary = "팀 미션 제출 조회")
     public ApiResponse<SubmissionResponse> getSubmission(
             @AuthenticationPrincipal User user,
             @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
             @Parameter(description = "팀 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Team team,
-            @Parameter(description = "팀 미션 ID", schema = @Schema(type = "string", format = "uuid"))@PathVariable TeamMission team_mission
+            @Parameter(description = "팀 미션 ID", schema = @Schema(type = "string", format = "uuid"))@PathVariable TeamMission teamMission
     ) {
 
-        return ApiResponse.ok(submissionService.getSubmission(user, season, team, team_mission));
+        return ApiResponse.ok(submissionService.getSubmission(user, season, team, teamMission));
     }
 
-    @PostMapping("/team_mission/{team_mission}/submissions")
+    @PostMapping("/team_mission/{teamMission}/submissions")
     @Operation(summary = "팀 미션 제출")
     public ApiResponse<SubmissionResponse> submitMission(
             @AuthenticationPrincipal User user,
             @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
             @Parameter(description = "팀 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Team team,
-            @Parameter(description = "팀 미션 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable TeamMission team_mission,
+            @Parameter(description = "팀 미션 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable TeamMission teamMission,
             @RequestBody @Valid CreateSubmissionRequest request
     ) {
 
-        return ApiResponse.ok(submissionService.submitSubmission(user, season, team, team_mission, request));
+        return ApiResponse.ok(submissionService.submitSubmission(user, season, team, teamMission, request));
     }
 }

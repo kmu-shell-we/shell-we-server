@@ -38,7 +38,7 @@ public class SubmissionService {
     }
 
     @Transactional(readOnly = true)
-    @PreAuthorize("@submissionService.canAccessSubmission(#user, #season, #team)")
+    @PreAuthorize("@submissionService.canAccessSubmission(#user, #season, #team) and #teamMission.team == #team")
     public SubmissionResponse getSubmission(User user, Season season, Team team, TeamMission teamMission) {
 
         Submission submission = submissionRepository.findByTeamMission(teamMission);
@@ -47,7 +47,7 @@ public class SubmissionService {
     }
 
     @Transactional
-    @PreAuthorize("@submissionService.canAccessSubmission(#user, #season, #team)")
+    @PreAuthorize("@submissionService.canAccessSubmission(#user, #season, #team) and #teamMission.team == #team")
     public SubmissionResponse submitSubmission(User user, Season season, Team team, TeamMission teamMission, CreateSubmissionRequest request) {
 
         Submission submission = submissionRepository.save(Submission

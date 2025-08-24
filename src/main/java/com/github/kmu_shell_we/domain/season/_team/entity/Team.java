@@ -7,6 +7,7 @@ import com.github.kmu_shell_we.global.infra.mysql.BaseSchema;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -35,9 +36,11 @@ public class Team extends BaseSchema {
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
-    List<UserTeam> userTeams = List.of();
+    @Setter(AccessLevel.NONE)
+    List<UserTeam> userTeams = new ArrayList<>();
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
-    List<Item> items = List.of();
+    @Setter(AccessLevel.NONE)
+    List<Item> items = new ArrayList<>();
 }
