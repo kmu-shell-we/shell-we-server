@@ -1,8 +1,8 @@
-package com.github.kmu_shell_we.domain.season._team._mission_team.controller;
+package com.github.kmu_shell_we.domain.season._team._team_mission.controller;
 
 
-import com.github.kmu_shell_we.domain.season._team._mission_team.dto.response.TeamMissionListResponse;
-import com.github.kmu_shell_we.domain.season._team._mission_team.service.TeamMissionService;
+import com.github.kmu_shell_we.domain.season._team._team_mission.dto.response.TeamMissionListResponse;
+import com.github.kmu_shell_we.domain.season._team._team_mission.service.TeamMissionService;
 import com.github.kmu_shell_we.domain.season._team.entity.Team;
 import com.github.kmu_shell_we.domain.season.entity.Season;
 import com.github.kmu_shell_we.global.response.ApiResponse;

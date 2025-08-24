@@ -1,18 +1,17 @@
-package com.github.kmu_shell_we.domain.season._team._mission_team.service;
+package com.github.kmu_shell_we.domain.season._team._team_mission.service;
 
 import com.github.kmu_shell_we.domain.mission._season_mission.entity.SeasonMission;
 import com.github.kmu_shell_we.domain.mission._season_mission.repository.SeasonMissionRepository;
 import com.github.kmu_shell_we.domain.mission.constant.MissionType;
-import com.github.kmu_shell_we.domain.season._team._mission_team.dto.response.TeamMissionListResponse;
-import com.github.kmu_shell_we.domain.season._team._mission_team.entity.TeamMission;
-import com.github.kmu_shell_we.domain.season._team._mission_team.repository.TeamMissionRepository;
+import com.github.kmu_shell_we.domain.season._team._team_mission.dto.response.TeamMissionListResponse;
+import com.github.kmu_shell_we.domain.season._team._team_mission.entity.TeamMission;
+import com.github.kmu_shell_we.domain.season._team._team_mission.repository.TeamMissionRepository;
 import com.github.kmu_shell_we.domain.season._team.entity.Team;
 import com.github.kmu_shell_we.domain.season._team.repository.TeamRepository;
 import com.github.kmu_shell_we.domain.season.entity.Season;
 import com.github.kmu_shell_we.domain.season.exception.SeasonExceptions;
 import com.github.kmu_shell_we.domain.season.repository.SeasonRepository;
 import com.github.kmu_shell_we.domain.user.entity.User;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,6 +43,7 @@ public class TeamMissionService {
                 .findAllByTeamAndEndedAtGreaterThanEqual(team, LocalDateTime.now()));
     }
 
+//    @PostConstruct
     @Scheduled(cron = "0 0 0 * * ?")
     @Transactional
     public void assignDailyMission() {
@@ -52,6 +52,7 @@ public class TeamMissionService {
                 now -> now.toLocalDate().plusDays(1).atStartOfDay());
     }
 
+//    @PostConstruct
     @Scheduled(cron = "0 0 0 ? * MON")
     @Transactional
     public void assignWeeklyMission() {
@@ -78,7 +79,7 @@ public class TeamMissionService {
         if (missions.isEmpty()) return;
 
         List<Team> teams = teamRepository.findAllBySeason(season);
-        if (teams.isEmpty()) return;
+//        if (teams.isEmpty()) return;
 
         LocalDateTime endedAt = endCalculator.apply(now);
         ThreadLocalRandom random = ThreadLocalRandom.current();

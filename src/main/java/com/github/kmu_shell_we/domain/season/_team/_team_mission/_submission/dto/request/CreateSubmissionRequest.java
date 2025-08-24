@@ -1,4 +1,4 @@
-package com.github.kmu_shell_we.domain.season._team._mission_team._submission_mission_team.dto.request;
+package com.github.kmu_shell_we.domain.season._team._team_mission._submission.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;

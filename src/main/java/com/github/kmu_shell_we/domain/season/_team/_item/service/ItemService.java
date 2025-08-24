@@ -12,9 +12,9 @@ import com.github.kmu_shell_we.domain.season._team._item.dto.response.detail.Mis
 import com.github.kmu_shell_we.domain.season._team._item.dto.response.detail.ScoreDeductionResponse;
 import com.github.kmu_shell_we.domain.season._team._item.entity.Item;
 import com.github.kmu_shell_we.domain.season._team._item.repository.ItemRepository;
-import com.github.kmu_shell_we.domain.season._team._mission_team.entity.TeamMission;
-import com.github.kmu_shell_we.domain.season._team._mission_team.exceptions.TeamMissionExceptions;
-import com.github.kmu_shell_we.domain.season._team._mission_team.repository.TeamMissionRepository;
+import com.github.kmu_shell_we.domain.season._team._team_mission.entity.TeamMission;
+import com.github.kmu_shell_we.domain.season._team._team_mission.exceptions.TeamMissionExceptions;
+import com.github.kmu_shell_we.domain.season._team._team_mission.repository.TeamMissionRepository;
 import com.github.kmu_shell_we.domain.season._team.entity.Team;
 import com.github.kmu_shell_we.domain.season._team.exception.TeamExceptions;
 import com.github.kmu_shell_we.domain.season._team.repository.TeamRepository;

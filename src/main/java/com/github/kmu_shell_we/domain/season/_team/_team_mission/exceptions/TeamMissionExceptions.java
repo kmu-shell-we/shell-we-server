@@ -1,4 +1,4 @@
-package com.github.kmu_shell_we.domain.season._team._mission_team.exceptions;
+package com.github.kmu_shell_we.domain.season._team._team_mission.exceptions;
 
 import com.github.kmu_shell_we.global.exception.ApiExceptionCode;
 import lombok.Getter;

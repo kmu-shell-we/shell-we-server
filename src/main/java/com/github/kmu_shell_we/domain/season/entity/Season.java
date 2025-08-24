@@ -43,7 +43,7 @@ public class Season extends BaseSchema {
 
     @OneToMany(mappedBy = "season", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
-    List<SeasonMission> missions = List.of();
+    List<SeasonMission> seasonMissions = List.of();
 
     public boolean isCurrentSeason() {
 
@@ -52,3 +52,5 @@ public class Season extends BaseSchema {
         return now.isAfter(startedAt) && now.isBefore(endedAt);
     }
 }
+
+// season.getSeasonMissions
