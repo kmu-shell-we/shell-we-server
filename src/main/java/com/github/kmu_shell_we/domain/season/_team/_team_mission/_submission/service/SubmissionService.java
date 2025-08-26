@@ -6,6 +6,7 @@ import com.github.kmu_shell_we.domain.season._team._team_mission._submission.dto
 import com.github.kmu_shell_we.domain.season._team._team_mission._submission.entity.Submission;
 import com.github.kmu_shell_we.domain.season._team._team_mission._submission.repository.SubmissionRepository;
 import com.github.kmu_shell_we.domain.season._team._team_mission.entity.TeamMission;
+import com.github.kmu_shell_we.domain.season._team._team_mission.exceptions.TeamMissionExceptions;
 import com.github.kmu_shell_we.domain.season._team._team_mission.repository.TeamMissionRepository;
 import com.github.kmu_shell_we.domain.season._team._user_team.repository.UserTeamRepository;
 import com.github.kmu_shell_we.domain.season._team.entity.Team;
@@ -41,20 +42,24 @@ public class SubmissionService {
     @PreAuthorize("@submissionService.canAccessSubmission(#user, #season, #team) and #teamMission.team == #team")
     public SubmissionResponse getSubmission(User user, Season season, Team team, TeamMission teamMission) {
 
-        Submission submission = submissionRepository.findByTeamMission(teamMission);
-
-        return SubmissionResponse.from(submission);
+        return submissionRepository.findByTeamMission(teamMission)
+                .map(SubmissionResponse::from)
+                .orElse(null);
     }
 
     @Transactional
     @PreAuthorize("@submissionService.canAccessSubmission(#user, #season, #team) and #teamMission.team == #team")
     public SubmissionResponse submitSubmission(User user, Season season, Team team, TeamMission teamMission, CreateSubmissionRequest request) {
 
-        Submission submission = submissionRepository.save(Submission
-                .builder()
-                .teamMission(teamMission)
-                .image(request.getImage())
-                .build()
+        submissionRepository.findByTeamMission(teamMission).ifPresent(submission -> {
+            throw TeamMissionExceptions.ALREADY_SUBMITTED.toException();
+        });
+
+        Submission submission = submissionRepository.save(
+                Submission.builder()
+                        .teamMission(teamMission)
+                        .image(request.getImage())
+                        .build()
         );
 
         return SubmissionResponse.from(submission);

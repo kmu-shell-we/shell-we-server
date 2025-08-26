@@ -6,11 +6,12 @@ import com.github.kmu_shell_we.domain.season._team._team_mission.entity.TeamMiss
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface SubmissionRepository extends JpaRepository<Submission, UUID> {
 
-    Submission findByTeamMission(TeamMission teamMission);
+    Optional<Submission> findByTeamMission(TeamMission teamMission);
 
     List<Submission> findAllByTeamMissionIn(List<TeamMission> teamMissions);
 }
