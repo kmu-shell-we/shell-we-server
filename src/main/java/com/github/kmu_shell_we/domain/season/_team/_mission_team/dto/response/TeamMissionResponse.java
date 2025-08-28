@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -19,11 +20,19 @@ public class TeamMissionResponse {
     @Schema(description = "팀 미션")
     MissionResponse mission;
 
+    @Schema(description = "시작 일시")
+    LocalDateTime startedAt;
+
+    @Schema(description = "종료 일시")
+    LocalDateTime endedAt;
+
     public static TeamMissionResponse from(TeamMission teamMission) {
 
         return TeamMissionResponse.of(
                 teamMission.getId(),
-                MissionResponse.from(teamMission.getMission())
+                MissionResponse.from(teamMission.getMission()),
+                teamMission.getStartedAt(),
+                teamMission.getEndedAt()
         );
     }
 }
