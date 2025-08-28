@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 public enum MissionExceptions implements ApiExceptionCode {
 
     NOT_FOUND_MISSION("MISSION_001", "미션을 찾을 수 없습니다."),
+    INVALID_SPECIAL_MISSION_TYPE("MISSION_002", "SPECIAL 타입이 아닙니다."),
     ;
 
     private final String code;

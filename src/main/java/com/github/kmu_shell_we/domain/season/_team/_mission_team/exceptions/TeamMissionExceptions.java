@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 public enum TeamMissionExceptions implements ApiExceptionCode {
 
     NOT_FOUND_TEAM_MISSION("TEAM_MISSION_001", "해당 팀 미션을 찾을 수 없습니다."),
+    INVALID_MISSION_TIME("TEAM_MISSION_002", "시작/종료 시각이 올바르지 않습니다."),
     ;
 
     private final String code;
