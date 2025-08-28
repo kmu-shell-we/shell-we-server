@@ -81,6 +81,7 @@ public class TeamMissionService {
         List<Team> teams = teamRepository.findAllBySeason(season);
 //        if (teams.isEmpty()) return;
 
+        LocalDateTime startedAt = season.getStartedAt();
         LocalDateTime endedAt = endCalculator.apply(now);
         ThreadLocalRandom random = ThreadLocalRandom.current();
 
@@ -92,6 +93,7 @@ public class TeamMissionService {
                     TeamMission.builder()
                         .mission(randomMission.getMission())
                         .team(team)
+                        .startedAt(startedAt)
                         .endedAt(endedAt)
                         .build()
             );
