@@ -32,6 +32,15 @@ public class AdminSeasonMissionController {
         return ApiResponse.ok(adminSeasonMissionService.getSeasonMissions(season));
     }
 
+    @GetMapping("/special")
+    @Operation(summary = "특정 시즌 스페셜 미션 조회")
+    public ApiResponse<MissionListResponse> getSeasonSpecialMissions(
+            @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season
+    ) {
+
+        return ApiResponse.ok(adminSeasonMissionService.getSeasonSpecialMissions(season));
+    }
+
     @PostMapping("/{mission}")
     @Operation(summary = "시즌 미션 생성")
     public ApiResponse<MissionResponse> createSeasonMission(

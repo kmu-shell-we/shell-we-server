@@ -3,6 +3,7 @@ package com.github.kmu_shell_we.domain.mission._season_mission.service;
 import com.github.kmu_shell_we.domain.mission._season_mission.entity.SeasonMission;
 import com.github.kmu_shell_we.domain.mission._season_mission.exception.SeasonMissionExceptions;
 import com.github.kmu_shell_we.domain.mission._season_mission.repository.SeasonMissionRepository;
+import com.github.kmu_shell_we.domain.mission.constant.MissionType;
 import com.github.kmu_shell_we.domain.mission.dto.response.MissionListResponse;
 import com.github.kmu_shell_we.domain.mission.dto.response.MissionResponse;
 import com.github.kmu_shell_we.domain.mission.entity.Mission;
@@ -21,6 +22,14 @@ public class AdminSeasonMissionService {
     public MissionListResponse getSeasonMissions(Season season) {
 
         return MissionListResponse.fromSeasonMission(seasonMissionRepository.findAllBySeason(season));
+    }
+
+    @Transactional(readOnly = true)
+    public MissionListResponse getSeasonSpecialMissions(Season season){
+
+        return MissionListResponse.fromSeasonMission(
+                seasonMissionRepository.findAllBySeasonAndMissionType(season, MissionType.SPECIAL)
+        );
     }
 
     @Transactional
