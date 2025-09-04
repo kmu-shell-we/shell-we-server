@@ -1,7 +1,7 @@
-package com.github.kmu_shell_we.domain.season._team._mission_team.entity;
+package com.github.kmu_shell_we.domain.season._team._team_mission.entity;
 
 import com.github.kmu_shell_we.domain.mission.entity.Mission;
-import com.github.kmu_shell_we.domain.season._team._mission_team._submission_mission_team.entity.Submission;
+import com.github.kmu_shell_we.domain.season._team._team_mission._submission.entity.Submission;
 import com.github.kmu_shell_we.domain.season._team.entity.Team;
 import com.github.kmu_shell_we.global.infra.mysql.BaseSchema;
 import jakarta.persistence.*;

@@ -12,13 +12,15 @@ import com.github.kmu_shell_we.domain.season._team._item.dto.response.detail.Mis
 import com.github.kmu_shell_we.domain.season._team._item.dto.response.detail.ScoreDeductionResponse;
 import com.github.kmu_shell_we.domain.season._team._item.entity.Item;
 import com.github.kmu_shell_we.domain.season._team._item.repository.ItemRepository;
-import com.github.kmu_shell_we.domain.season._team._mission_team.entity.TeamMission;
-import com.github.kmu_shell_we.domain.season._team._mission_team.exceptions.TeamMissionExceptions;
-import com.github.kmu_shell_we.domain.season._team._mission_team.repository.TeamMissionRepository;
+import com.github.kmu_shell_we.domain.season._team._team_mission.entity.TeamMission;
+import com.github.kmu_shell_we.domain.season._team._team_mission.exceptions.TeamMissionExceptions;
+import com.github.kmu_shell_we.domain.season._team._team_mission.repository.TeamMissionRepository;
+import com.github.kmu_shell_we.domain.season._team._user_team.repository.UserTeamRepository;
 import com.github.kmu_shell_we.domain.season._team.entity.Team;
 import com.github.kmu_shell_we.domain.season._team.exception.TeamExceptions;
 import com.github.kmu_shell_we.domain.season._team.repository.TeamRepository;
 import com.github.kmu_shell_we.domain.season.entity.Season;
+import com.github.kmu_shell_we.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -31,20 +33,22 @@ import java.util.concurrent.ThreadLocalRandom;
 @RequiredArgsConstructor
 public class ItemService {
 
-    private final ItemRepository itemRepository;
     private final TeamRepository teamRepository;
+    private final UserTeamRepository userTeamRepository;
+    private final ItemRepository itemRepository;
     private final TeamMissionRepository teamMissionRepository;
     private final SeasonMissionRepository seasonMissionRepository;
 
     @Transactional(readOnly = true)
-    @PreAuthorize("#season.isCurrentSeason() and #season == #team.season")
-    public ItemListResponse getItems(Season season, Team team) {
+    @PreAuthorize("@itemService.canAccessItem(#user, #season, #team)")
+    public ItemListResponse getItems(User user, Season season, Team team) {
 
         return ItemListResponse.from(itemRepository.findAllByTeam(team));
     }
 
     @Transactional
-    public ItemResponse drawItem(Season season, Team team) {
+    @PreAuthorize("@itemService.canAccessItem(#user, #season, #team)")
+    public ItemResponse drawItem(User user, Season season, Team team) {
 
         // 1. 아이템 랜덤 뽑기
         ItemType itemType = drawRandomItem();
@@ -100,5 +104,12 @@ public class ItemService {
         if (r < 0.90) return ItemType.MISSION_CHANGE;
 
         return ItemType.SCORE_DEDUCTION;
+    }
+
+    public boolean canAccessItem(User user, Season season, Team team) {
+
+        return userTeamRepository.findByUserAndTeam(user, team).isPresent()
+                && season.isCurrentSeason()
+                && season.equals(team.getSeason());
     }
 }

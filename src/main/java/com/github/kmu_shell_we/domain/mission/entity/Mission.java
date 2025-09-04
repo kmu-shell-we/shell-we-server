@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,5 +37,6 @@ public class Mission extends BaseSchema {
 
     @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
-    List<SeasonMission> seasonMissions = List.of();
+    @Setter(AccessLevel.NONE)
+    List<SeasonMission> seasonMissions = new ArrayList<>();
 }

@@ -1,7 +1,7 @@
-package com.github.kmu_shell_we.domain.season._team._mission_team.dto.response;
+package com.github.kmu_shell_we.domain.season._team._team_mission.dto.response;
 
 import com.github.kmu_shell_we.domain.mission.dto.response.MissionResponse;
-import com.github.kmu_shell_we.domain.season._team._mission_team.entity.TeamMission;
+import com.github.kmu_shell_we.domain.season._team._team_mission.entity.TeamMission;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;

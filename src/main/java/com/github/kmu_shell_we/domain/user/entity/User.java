@@ -6,6 +6,7 @@ import com.github.kmu_shell_we.global.infra.mysql.BaseSchema;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -35,11 +36,13 @@ public class User extends BaseSchema {
 
     @OneToMany(mappedBy = "user", cascade =  CascadeType.ALL, orphanRemoval = true,  fetch = FetchType.LAZY)
     @Builder.Default
-    List<UserTeam> userTeams = List.of();
+    @Setter(AccessLevel.NONE)
+    List<UserTeam> userTeams = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
-    List<Schedule> schedules = List.of();
+    @Setter(AccessLevel.NONE)
+    List<Schedule> schedules = new ArrayList<>();
 
     public enum Role {
 

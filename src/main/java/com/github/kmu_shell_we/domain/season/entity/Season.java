@@ -9,6 +9,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,11 +40,13 @@ public class Season extends BaseSchema {
 
     @OneToMany(mappedBy = "season", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
-    List<Team> teams = List.of();
+    @Setter(AccessLevel.NONE)
+    List<Team> teams = new ArrayList<>();
 
     @OneToMany(mappedBy = "season", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
-    List<SeasonMission> missions = List.of();
+    @Setter(AccessLevel.NONE)
+    List<SeasonMission> seasonMissions = new ArrayList<>();
 
     public boolean isCurrentSeason() {
 
