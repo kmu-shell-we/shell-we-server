@@ -9,6 +9,7 @@ import com.github.kmu_shell_we.global.response.ApiResponse;
 import com.github.kmu_shell_we.global.security.guard.MemberGuard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class TeamScheduleController {
     public ApiResponse<TeamScheduleResponse> getTeamSchedule(
             @Parameter(description = "시즌 ID", schema = @Schema(type = "string", format = "uuid")) @PathVariable Season season,
             @Parameter(description = "팀 ID", schema = @Schema(type = "string", format = "uuid"))  @PathVariable Team team,
-            @RequestParam List<User> users
+            @Parameter(description = "유저 ID 목록", array = @ArraySchema(schema = @Schema(type = "string", format = "uuid"))) @RequestParam List<User> users
     ) {
 
         return ApiResponse.ok(scheduleService.getTeamSchedule(season, team, users));
