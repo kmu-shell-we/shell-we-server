@@ -11,6 +11,7 @@ import com.github.kmu_shell_we.domain.season._team._item.dto.response.detail.Exp
 import com.github.kmu_shell_we.domain.season._team._item.dto.response.detail.MissionChangeResponse;
 import com.github.kmu_shell_we.domain.season._team._item.dto.response.detail.ScoreDeductionResponse;
 import com.github.kmu_shell_we.domain.season._team._item.entity.Item;
+import com.github.kmu_shell_we.domain.season._team._item.exception.ItemExceptions;
 import com.github.kmu_shell_we.domain.season._team._item.repository.ItemRepository;
 import com.github.kmu_shell_we.domain.season._team._team_mission.entity.TeamMission;
 import com.github.kmu_shell_we.domain.season._team._team_mission.exceptions.TeamMissionExceptions;
@@ -49,6 +50,14 @@ public class ItemService {
     @Transactional
     @PreAuthorize("@itemService.canAccessItem(#user, #season, #team)")
     public ItemResponse drawItem(User user, Season season, Team team) {
+
+        // 0. 포인트 조회 및 차감
+        if (team.getPoint() < 100) {
+
+            throw ItemExceptions.NOT_ENOUGH_POINT.toException();
+        }
+
+        team.setPoint(team.getPoint() - 100);
 
         // 1. 아이템 랜덤 뽑기
         ItemType itemType = drawRandomItem();
