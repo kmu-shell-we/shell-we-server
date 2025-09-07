@@ -1,5 +1,7 @@
 package com.github.kmu_shell_we.domain.season._team._team_mission._submission.service;
 
+import com.github.kmu_shell_we.domain.season._team._item.constant.ItemType;
+import com.github.kmu_shell_we.domain.season._team._item.entity.Item;
 import com.github.kmu_shell_we.domain.season._team._team_mission._submission.dto.request.CreateSubmissionRequest;
 import com.github.kmu_shell_we.domain.season._team._team_mission._submission.dto.response.SubmissionListResponse;
 import com.github.kmu_shell_we.domain.season._team._team_mission._submission.dto.response.SubmissionResponse;
@@ -62,7 +64,27 @@ public class SubmissionService {
                         .build()
         );
 
+        reward(team, teamMission);
+
         return SubmissionResponse.from(submission);
+    }
+
+    public void reward(Team team, TeamMission teamMission) {
+
+        Integer reward = teamMission.getMission().getReward();
+
+        team.setExperience(team.getExperience() + reward);
+        team.setPoint(team.getPoint() + reward / 2);
+
+        // 경험치 두 배 아이템 존재 여부 확인 및 존재 시 경험치 한 번 더 지급
+        team.getItems().stream()
+                .filter(Item::isUnUsed)
+                .filter(item -> item.getType().equals(ItemType.EXPERIENCE_DOUBLE))
+                .findFirst()
+                .ifPresent(item -> {
+                    item.setUnUsed(false);
+                    team.setExperience(team.getExperience() + reward);
+                });
     }
 
     public boolean canAccessSubmission(User user, Season season, Team team) {
