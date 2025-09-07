@@ -22,4 +22,7 @@ public class Item extends BaseSchema {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     ItemType type;
+
+    @Column(nullable = false)
+    boolean isUnUsed = false;
 }

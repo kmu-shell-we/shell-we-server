@@ -63,19 +63,25 @@ public class ItemService {
         ItemType itemType = drawRandomItem();
 
         // 2. 뽑은 아이템을 DB에 저장
-        itemRepository.save(Item.builder()
-                .team(team)
-                .type(itemType)
-                .build());
+        if (itemType == ItemType.EXPERIENCE_DOUBLE) {
+
+            itemRepository.save(Item.builder()
+                    .team(team)
+                    .type(itemType)
+                    .isUnUsed(true)
+                    .build());
+        } else {
+
+            itemRepository.save(Item.builder()
+                    .team(team)
+                    .type(itemType)
+                    .build());
+        }
 
         // 3. 뽑은 아이템에 대한 응답 DTO 반환
         return switch (itemType) {
             case BOOM -> BoomResponse.of();
-            case EXPERIENCE_DOUBLE -> {
-
-                // TODO: 미션 성공 시 경험치 두 배가 되도록
-                yield ExperienceDoubleResponse.of();
-            }
+            case EXPERIENCE_DOUBLE -> ExperienceDoubleResponse.of();
             case MISSION_CHANGE -> {
 
                 TeamMission current = teamMissionRepository
