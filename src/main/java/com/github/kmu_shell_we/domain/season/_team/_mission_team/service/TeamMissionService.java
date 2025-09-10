@@ -77,6 +77,14 @@ public class TeamMissionService {
         if (startedAt == null || endedAt == null || !endedAt.isAfter(startedAt))
             throw TeamMissionExceptions.INVALID_MISSION_TIME.toException();
 
+        LocalDateTime seasonStart = season.getStartedAt();
+        LocalDateTime seasonEnd = season.getEndedAt();
+        if (seasonStart != null && seasonEnd != null) {
+            if (startedAt.isBefore(seasonStart) || endedAt.isAfter(seasonEnd)) {
+                throw TeamMissionExceptions.INVALID_MISSION_TIME.toException();
+            }
+        }
+
         if (!season.isCurrentSeason())
             throw SeasonExceptions.NOT_FOUND_CURRENT_SEASON.toException();
 
@@ -99,7 +107,7 @@ public class TeamMissionService {
                     .endedAt(endedAt)
                     .build());
         }
-        
+
         return teamMissionRepository.saveAll(teamMissions);
     }
 
