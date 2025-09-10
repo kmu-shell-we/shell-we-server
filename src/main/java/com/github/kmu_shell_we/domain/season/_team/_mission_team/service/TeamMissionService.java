@@ -43,8 +43,9 @@ public class TeamMissionService {
     @PreAuthorize("#season.isCurrentSeason() and #season == #team.season and @teamMissionService.teamCheck(#team, authentication.principal)")
     public TeamMissionListResponse getTeamMissions(Season season, Team team) {
 
+        LocalDateTime now = LocalDateTime.now();
         return TeamMissionListResponse.from(teamMissionRepository
-                .findAllByTeamAndEndedAtGreaterThanEqual(team, LocalDateTime.now()));
+            .findAllByTeamAndStartedAtLessThanEqualAndEndedAtGreaterThanEqual(team, now, now));
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
