@@ -1,12 +1,16 @@
-package com.github.kmu_shell_we.domain.season._team._team_mission.service;
+package com.github.kmu_shell_we.domain.season._team._mission_team.service;
 
 import com.github.kmu_shell_we.domain.mission._season_mission.entity.SeasonMission;
 import com.github.kmu_shell_we.domain.mission._season_mission.repository.SeasonMissionRepository;
 import com.github.kmu_shell_we.domain.mission.constant.MissionType;
-import com.github.kmu_shell_we.domain.season._team._team_mission.dto.response.TeamMissionListResponse;
-import com.github.kmu_shell_we.domain.season._team._team_mission.entity.TeamMission;
-import com.github.kmu_shell_we.domain.season._team._team_mission.repository.TeamMissionRepository;
+import com.github.kmu_shell_we.domain.mission.entity.Mission;
+import com.github.kmu_shell_we.domain.mission.exception.MissionExceptions;
+import com.github.kmu_shell_we.domain.season._team._mission_team.dto.response.TeamMissionListResponse;
+import com.github.kmu_shell_we.domain.season._team._mission_team.entity.TeamMission;
+import com.github.kmu_shell_we.domain.season._team._mission_team.exceptions.TeamMissionExceptions;
+import com.github.kmu_shell_we.domain.season._team._mission_team.repository.TeamMissionRepository;
 import com.github.kmu_shell_we.domain.season._team.entity.Team;
+import com.github.kmu_shell_we.domain.season._team.exception.TeamExceptions;
 import com.github.kmu_shell_we.domain.season._team.repository.TeamRepository;
 import com.github.kmu_shell_we.domain.season.entity.Season;
 import com.github.kmu_shell_we.domain.season.exception.SeasonExceptions;
@@ -39,11 +43,11 @@ public class TeamMissionService {
     @PreAuthorize("#season.isCurrentSeason() and #season == #team.season and @teamMissionService.teamCheck(#team, authentication.principal)")
     public TeamMissionListResponse getTeamMissions(Season season, Team team) {
 
+        LocalDateTime now = LocalDateTime.now();
         return TeamMissionListResponse.from(teamMissionRepository
-                .findAllByTeamAndEndedAtGreaterThanEqual(team, LocalDateTime.now()));
+            .findAllByTeamAndStartedAtLessThanEqualAndEndedAtGreaterThanEqual(team, now, now));
     }
 
-//    @PostConstruct
     @Scheduled(cron = "0 0 0 * * ?")
     @Transactional
     public void assignDailyMission() {
@@ -52,7 +56,6 @@ public class TeamMissionService {
                 now -> now.toLocalDate().plusDays(1).atStartOfDay());
     }
 
-//    @PostConstruct
     @Scheduled(cron = "0 0 0 ? * MON")
     @Transactional
     public void assignWeeklyMission() {
@@ -62,6 +65,50 @@ public class TeamMissionService {
                         .with(TemporalAdjusters.next(DayOfWeek.SUNDAY))
                         .plusDays(1)
                         .atStartOfDay());
+    }
+
+    @Transactional
+    public List<TeamMission> createSpecialMission(
+                Season season,
+                Mission mission,
+                LocalDateTime startedAt,
+                LocalDateTime endedAt
+        ) {
+
+        if (startedAt == null || endedAt == null || !endedAt.isAfter(startedAt))
+            throw TeamMissionExceptions.INVALID_MISSION_TIME.toException();
+
+        LocalDateTime seasonStart = season.getStartedAt();
+        LocalDateTime seasonEnd = season.getEndedAt();
+        if (seasonStart != null && startedAt.isBefore(seasonStart))
+            throw TeamMissionExceptions.INVALID_MISSION_TIME.toException();
+        if (seasonEnd != null && endedAt.isAfter(seasonEnd))
+            throw TeamMissionExceptions.INVALID_MISSION_TIME.toException();
+
+        if (!season.isCurrentSeason())
+            throw SeasonExceptions.NOT_FOUND_CURRENT_SEASON.toException();
+
+        if (mission == null)
+            throw MissionExceptions.NOT_FOUND_MISSION.toException();
+
+        if (mission.getType() != MissionType.SPECIAL)
+            throw MissionExceptions.INVALID_SPECIAL_MISSION_TYPE.toException();
+
+        List<Team> teams = season.getTeams();
+        if (teams.isEmpty())
+            throw TeamExceptions.NOT_FOUND_TEAM.toException();
+
+        List<TeamMission> teamMissions = new ArrayList<>();
+        for (Team team : teams) {
+            teamMissions.add(TeamMission.builder()
+                    .mission(mission)
+                    .team(team)
+                    .startedAt(startedAt)
+                    .endedAt(endedAt)
+                    .build());
+        }
+
+        return teamMissionRepository.saveAll(teamMissions);
     }
 
     private void addRandomMission(
@@ -79,8 +126,9 @@ public class TeamMissionService {
         if (missions.isEmpty()) return;
 
         List<Team> teams = teamRepository.findAllBySeason(season);
-//        if (teams.isEmpty()) return;
+        if (teams.isEmpty()) return;
 
+        LocalDateTime startedAt = season.getStartedAt();
         LocalDateTime endedAt = endCalculator.apply(now);
         ThreadLocalRandom random = ThreadLocalRandom.current();
 
@@ -92,6 +140,7 @@ public class TeamMissionService {
                     TeamMission.builder()
                         .mission(randomMission.getMission())
                         .team(team)
+                        .startedAt(startedAt)
                         .endedAt(endedAt)
                         .build()
             );

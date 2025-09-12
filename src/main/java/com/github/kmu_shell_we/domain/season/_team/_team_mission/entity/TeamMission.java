@@ -29,6 +29,10 @@ public class TeamMission extends BaseSchema {
 
     @Column(nullable = false)
     @NotNull
+    LocalDateTime startedAt;
+
+    @Column(nullable = false)
+    @NotNull
     LocalDateTime endedAt;
 
     @OneToOne(fetch = FetchType.LAZY)
